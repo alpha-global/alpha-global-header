@@ -1,0 +1,245 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="/assets/css/header-styles.html">
+<!--<link rel="stylesheet" href="/assets/css/header.css" />-->
+<link rel="stylesheet" href="/assets/css/fonts.min.css" />
+
+<dom-module id="alpha-global-header">
+
+	<style include="header-styles"></style>
+
+	<template>
+
+		<template is="dom-if" if="{{home}}">
+			<question-mark id="mobileLogo" href="[[home]]">
+				<div class="icon-logo"></div>
+			</question-mark>
+		</template>
+
+		<div class=" alpha-menu-wrapper">
+      		<div class="alpha-menu header">
+
+				<span id="closeButton" class="icon-close-thin" on-click="close"></span>
+
+ 				<template is="dom-if" if="{{home}}">
+					 <div class="before-menu">
+						<question-mark href="[[home]]">
+							<div class="icon-logo"></div>
+						</question-mark>
+					</div>
+
+				</template>
+
+				<ul class="alpha-menu-area collapsible">
+
+					<slot id="menuSlot"></slot>
+
+					<template is="dom-if" if="{{languages}}">
+						<li class="language-menu menu-item menu-item-has-children">
+							<a href="#">Global</a>
+							<span class="sub-menu-toggle"></span>
+							<ul class="sub-menu">
+								<template is="dom-repeat" items="{{languages}}">
+									<li class="menu-item "><a href="[[item.href]]">[[item.label]]</a></li>
+								</template>
+
+
+							</ul>
+						</li>
+					</template>
+
+					<template is="dom-if" if="{{search}}">
+						<li class="menu-item search-element search-element-toggle" on-click="toggleSearchInput">
+							<div class="menu-search-label icon-search"></div>
+						</li>
+						<div id="menuSearchArea" class$="menu-search-area [[searchOpenClass]]">
+							<form class="menu-search" action="[[searchAction]]">
+								<div class="menu-search-input-wrapper">
+									<input class="menu-search-input" type="text" name="s" value="" placeholder="Search">
+								</div>
+								<div class="search-form-close icon-close-thin" on-click="toggleSearchInput"></div>
+							</form>
+						</div>
+					</template>
+
+				</ul>
+
+			</div>
+		</div>
+
+
+    	<div data-menu-toggle="" class="menu-toggle"><i></i></div>
+	</template>
+
+	<script>'use strict';
+
+		var $htmlClasses = window.document.documentElement.classList;
+
+		/**
+		* Function to add dom classes for css styling
+		*/
+		function addDomClasses(){
+
+		   var prefixes = 'transform WebkitTransform MozTransform OTransform msTransform'.split(' ');
+		   var div = document.createElement('div');
+		   var classes = "nocsstransforms3d";
+		   for(var i = 0; i < prefixes.length; i++) {
+			   if(div && div.style[prefixes[i]] !== undefined) {
+				   classes = "csstransforms3d";
+				   break;
+			   }
+		   }
+		   $htmlClasses.add(classes);
+
+		}
+
+
+		addDomClasses();
+
+	Polymer({
+        is : 'alpha-global-header',
+			properties: {
+				title : String,
+				settings : Object,
+				home : String,
+				languages : Array,
+				search : Boolean,
+				searchAction : String
+			},
+			parseSettings : function(){
+
+			},
+			ready : function(){
+
+				this.parseSettings();
+
+				var menu = this.querySelector(".alpha-menu");
+				var _this = this;
+
+				// firefox sucks, we need to add the style scope to all rendered contents
+				let elements = this.queryAllEffectiveChildren('*');
+
+				for(var i = 0; i < elements.length; i++){
+					let element = elements[i];
+					this.applyShadowStyles(element);
+				}
+
+				// add toggles
+				this.addSubMenuToggles();
+
+
+
+				this.addEventListener('click', function(event) {
+					_this.onSiteMenuClick(event);
+				});
+
+
+				//this.$element.on('click', '[data-sub-menu-toggle]', (event) => {this.toggleSubMenu(event);})
+
+				/**
+				* Set up menu toggle button listeners
+				*/
+
+				this.$.menuToggle = this.querySelector('[data-menu-toggle]');
+				this.$.menuToggle.addEventListener('click', function(event){
+					_this.onToggleClick(event);
+				});
+
+			},
+
+			/**
+			 * Apply shady-css classes so that our stylesheets apply to content passed in
+			 */
+			applyShadowStyles : function(element) {
+
+				element.classList.add("alpha-global-header");
+				element.classList.add("style-scope");
+
+				let elements =  element.querySelectorAll('*');
+
+				for(var i = 0; i < elements.length; i++){
+					let _element = elements[i];
+					this.applyShadowStyles(_element);
+
+				}
+			},
+
+			addSubMenuToggles : function(){
+
+				function createToggle(){
+					var tog = document.createElement("span");
+					tog.setAttribute("data-sub-menu-toggle", "");
+					tog.classList.add('sub-menu-toggle');
+					return tog;
+				}
+
+				var subSelector;
+				//if(this.settings.mobile.forceSubMenuButtons){
+				   subSelector = '.menu-item-has-children > a';
+				//}else{
+				  // subSelector = '.sub-menu';
+				//}
+
+				this.querySelectorAll(subSelector).forEach(function(item) {
+					item.parentNode.insertBefore(createToggle(), item.nextSibling);
+				});
+			},
+
+			open : function(){
+			   $htmlClasses.add('nav-open');
+			   this.classList.add('open');
+			},
+			/**
+			* Close the Menu
+			*/
+			close : function(){
+			   $htmlClasses.remove('nav-open');
+			   this.classList.remove('open');
+			},
+
+			/**
+			* On Site Menu Clicked
+			*/
+			onSiteMenuClick : function(event){
+
+				if(event.target.classList.contains("alpha-menu-wrapper") || event.target.attributes.getNamedItem("data-menu-close-button")){
+
+					this.close();
+
+				}else if(event.target.attributes.getNamedItem('data-sub-menu-toggle')){
+
+					this.toggleSubMenu(event);
+
+				}
+			},
+
+			/**
+			* Menu Toggle Clicked
+			*/
+			onToggleClick : function(event){
+
+				if($htmlClasses.contains('nav-open')){
+					this.close();
+				}else{
+					this.open();
+				}
+			},
+
+			toggleSearchInput : function(){
+				this.searchOpenClass = this.searchOpenClass === "open" ? "" : "open";
+			},
+
+			/**
+			* Sub Menu Toggle Clicked
+			*/
+			toggleSubMenu : function(event){
+				var menu = event.target.parentNode;
+				if(menu.classList.contains("open")){
+					menu.classList.remove("open");
+				}else{
+					menu.classList.add("open");
+				}
+			}
+		});
+	</script>
+
+</dom-module>
