@@ -65,38 +65,40 @@ gulp.task("angular-styles", function(){
 /**
  * Take the .woff files and build them into data-uri, concatted file
  */
-gulp.task('fonts', function() {
+gulp.task('fonts:avant-garde', function() {
 
-	gulp.src('assets/fonts/config.json')
+	gulp.src('assets/fonts/fonts.json')
+		.pipe(rtFonts.fromConfig())
+		.pipe(gulp.dest('assets/css'));
+	});
 
-		.pipe(rtFonts.fromConfig({
-			// concat the fonts into one file, false or empty will create files for each
-			concat : "fonts.min.css",
+gulp.task('fonts:icons', function() {
 
-			// create reference docs (will combine if concat)
-			reference : true
-		}))
-
+	gulp.src('assets/fonts/icons.json')
+		.pipe(rtFonts.fromConfig())
 		.pipe(gulp.dest('assets/css'));
 });
+
+gulp.task("fonts", [
+	"fonts:avant-garde",
+	"fonts:icons"
+]);
 
 gulp.task("styles", [
 	"polymer-styles",
 	"angular-styles"
-	//"fonts"
 ]);
 
 /**
  * Build theme tasks into one
  */
 gulp.task("default", [
-	"styles",
-	"fonts"
+	"styles"
 ]);
 
 
 gulp.task("watch", function(){
 	gulp.watch("assets/less/**/*.less",["styles"]),
-	gulp.watch("assets/fonts/config.json",["fonts"])
+	gulp.watch("assets/fonts/*.json",["fonts"])
 
 });

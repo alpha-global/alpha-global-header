@@ -1,13 +1,11 @@
-<link rel="import" href="../../bower_components/polymer/polymer.html">
-<link rel="import" href="/assets/css/header-styles.html">
-<!--<link rel="stylesheet" href="/assets/css/header.css" />-->
-<link rel="stylesheet" href="/assets/css/fonts.min.css" />
+<link rel="import" href="../../../polymer/polymer.html">
+<link rel="import" href="../../assets/css/header-styles.html">
 
 <dom-module id="alpha-global-header">
 
-	<style include="header-styles"></style>
-
 	<template>
+
+		<style include="header-styles"></style>
 
 		<template is="dom-if" if="{{home}}">
 			<question-mark id="mobileLogo" href="[[home]]">
@@ -15,8 +13,8 @@
 			</question-mark>
 		</template>
 
-		<div class=" alpha-menu-wrapper">
-      		<div class="alpha-menu header">
+		<div class="menu-wrapper">
+      		<div class="menu-container">
 
 				<span id="closeButton" class="icon-close-thin" on-click="close"></span>
 
@@ -29,7 +27,7 @@
 
 				</template>
 
-				<ul class="alpha-menu-area collapsible">
+				<ul class="main-menu collapsible">
 
 					<slot id="menuSlot"></slot>
 
@@ -67,7 +65,7 @@
 		</div>
 
 
-    	<div data-menu-toggle="" class="menu-toggle"><i></i></div>
+    	<div class="menu-toggle"><i></i></div>
 	</template>
 
 	<script>'use strict';
@@ -112,8 +110,10 @@
 
 				this.parseSettings();
 
-				var menu = this.querySelector(".alpha-menu");
 				var _this = this;
+
+				// add toggles
+				this.addSubMenuToggles();
 
 				// firefox sucks, we need to add the style scope to all rendered contents
 				let elements = this.queryAllEffectiveChildren('*');
@@ -122,10 +122,6 @@
 					let element = elements[i];
 					this.applyShadowStyles(element);
 				}
-
-				// add toggles
-				this.addSubMenuToggles();
-
 
 
 				this.addEventListener('click', function(event) {
@@ -139,7 +135,7 @@
 				* Set up menu toggle button listeners
 				*/
 
-				this.$.menuToggle = this.querySelector('[data-menu-toggle]');
+				this.$.menuToggle = this.querySelector('.menu-toggle');
 				this.$.menuToggle.addEventListener('click', function(event){
 					_this.onToggleClick(event);
 				});
@@ -172,14 +168,11 @@
 					return tog;
 				}
 
-				var subSelector;
-				//if(this.settings.mobile.forceSubMenuButtons){
-				   subSelector = '.menu-item-has-children > a';
-				//}else{
-				  // subSelector = '.sub-menu';
-				//}
+				var subSelector = '.menu-item-has-children > a';
 
-				this.querySelectorAll(subSelector).forEach(function(item) {
+				var childContainers = this.querySelectorAll(subSelector);
+
+				childContainers.forEach(function(item) {
 					item.parentNode.insertBefore(createToggle(), item.nextSibling);
 				});
 			},
@@ -205,7 +198,7 @@
 
 					this.close();
 
-				}else if(event.target.attributes.getNamedItem('data-sub-menu-toggle')){
+				}else if(event.target.classList.contains('sub-menu-toggle')){
 
 					this.toggleSubMenu(event);
 

@@ -1,0 +1,36 @@
+
+{
+	"name": "Alpha Header Fonts",
+	"fonts" : [
+		{
+			"fontFamily" : "ITCAvantGardeStd",
+			"subsets" : [
+				{
+					"fontWeight" : 300,
+					"fontStyle" : "normal",
+					"src" : "ITCAvantGardeStd-Light.woff"
+				},
+				{
+					"fontWeight" : 400,
+					"fontStyle" : "normal",
+					"src" : "ITCAvantGardeStd-Regular.woff"
+				},
+				{
+					"fontWeight" : 500,
+					"fontStyle" : "normal",
+					"src" : "ITCAvantGardeDemi.woff"
+				},
+				{
+					"fontWeight" : 600,
+					"fontStyle" : "normal",
+					"src" : "ITCAvantGardeStd-SemiBold.woff"
+				},
+				{
+					"fontWeight" : 700,
+					"fontStyle" : "normal",
+					"src" : "ITCAvantGardeStd-Bold.woff"
+				}
+			]
+		}
+	]
+}
