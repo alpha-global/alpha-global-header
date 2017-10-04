@@ -19,15 +19,15 @@ import { registerMenu } from '../../common/menu-width';
 const $htmlClasses = window.document.documentElement.classList;
 
 
-@Directive({selector: 'li'})
+@Directive( { selector: 'li' } )
 export class MenuItem  {}
 
-@Directive({selector: 'ul'})
+@Directive( { selector: 'ul' } )
 export class SubMenu  {}
 
-@Component({
-	selector: 'alpha-global-header',
-  	template : `
+@Component( {
+	selector : 'alpha-global-header',
+	template : `
 	<a *ngIf="home" class="question-mark icon-logo" id="mobileLogo" href="[[home]]"></a>
 	<div class="menu-wrapper">
 		<div class="menu-container">
@@ -81,26 +81,26 @@ export class SubMenu  {}
 })
 export class AlphaGlobalHeader implements AfterContentInit, AfterViewInit {
 
-	private _isOpen:boolean;
+	private _isOpen: boolean;
 
 	// search input open class
-	public searchOpenClass:string;
+	public searchOpenClass: string;
 
 	// top level menu items
-	@ContentChildren(MenuItem, { descendants : false, read: ElementRef } ) menuItems: QueryList<ElementRef>;
+	@ContentChildren( MenuItem, { descendants : false, read: ElementRef } ) menuItems: QueryList< ElementRef >;
 
 	// sub menus
-	@ContentChildren(SubMenu, { descendants : true, read: ElementRef } ) subMenus: QueryList<ElementRef>;
+	@ContentChildren( SubMenu, { descendants : true, read: ElementRef } ) subMenus: QueryList< ElementRef >;
 
 	// menu container
-	@ViewChild('mainMenu') mainMenu : ElementRef;
+	@ViewChild('mainMenu') mainMenu: ElementRef;
 
-	@Input('home') home:string;
-	@Input('search') search:boolean;
-	@Input('searchAction') searchAction:string;
-	@Input('languages') languages:Array<any>;
+	@Input('home') home: string;
+	@Input('search') search: boolean;
+	@Input('searchAction') searchAction: string;
+	@Input('languages') languages: Array< any >;
 
-	@HostListener( 'click', [ '$event' ] ) onMenuClick ( event ) : void {
+	@HostListener( 'click', [ '$event' ] ) onMenuClick ( event ): void {
 
 		if ( event.target.classList.contains ( 'sub-menu-toggle' ) )  {
 
@@ -108,13 +108,13 @@ export class AlphaGlobalHeader implements AfterContentInit, AfterViewInit {
 		}
 	}
 
-	@HostBinding('class.open') public get opened():boolean{
+	@HostBinding( 'class.open' ) public get opened(): boolean {
 		return this._isOpen;
 	}
 
-	public set collapsed( value : boolean) {
+	public set collapsed( value: boolean ) {
 
-		if( value ) {
+		if ( value ) {
 			this.elRef.nativeElement.classList.add( 'collapsed' );
 		} else {
 			this.elRef.nativeElement.classList.remove( 'collapsed' );
@@ -123,25 +123,25 @@ export class AlphaGlobalHeader implements AfterContentInit, AfterViewInit {
 	}
 
 	public constructor(
-		private elRef:ElementRef
-	){
+		private elRef: ElementRef
+	) {
 
 	}
 
 	/**
 	 * Prepare sub-menu toggles
 	 */
-	public ngAfterContentInit() : void {
+	public ngAfterContentInit(): void {
 
 		this.subMenus
 			.map( elRef => elRef.nativeElement )
-			//.filter( elRef => elRef.nativeElement.classList.contains( 'menu-item-has-children' ) )
+			// .filter( elRef => elRef.nativeElement.classList.contains( 'menu-item-has-children' ) )
 			.forEach(subMenu => {
 
-				let tog = document.createElement("span");
-					tog.classList.add('sub-menu-toggle');
+				const tog = document.createElement( 'span' );
+					tog.classList.add( 'sub-menu-toggle' );
 
-				subMenu.parentNode.insertBefore(tog, subMenu);
+				subMenu.parentNode.insertBefore( tog, subMenu );
 
 			});
 
@@ -150,16 +150,16 @@ export class AlphaGlobalHeader implements AfterContentInit, AfterViewInit {
 	/**
 	 * After view and content has been rendered, check the menu widths
 	 */
-	ngAfterViewInit(){
+	ngAfterViewInit(): void {
 
 		// use our common menu sizing lib
 		registerMenu( this.mainMenu.nativeElement, {
 
 			// map config properties to css vars
-			minItemSize : "@item-size",
-			itemPadding : "@item-padding",
-			fontSize : "@item-font-size",
-			reservedWidth : "@menu-reserved-width",
+			minItemSize : '@item-size',
+			itemPadding : '@item-padding',
+			fontSize : '@item-font-size',
+			reservedWidth : '@menu-reserved-width',
 
 			onCollapse : () => {
 				this.collapsed = true;
@@ -174,26 +174,26 @@ export class AlphaGlobalHeader implements AfterContentInit, AfterViewInit {
 	/**
 	 * Close Menu
 	 */
-	public close():void {
-		$htmlClasses.remove('nav-open');
+	public close(): void {
+		$htmlClasses.remove( 'nav-open' );
 		this._isOpen = false;
 	}
 
 	/**
 	 * Open Menu
 	 */
-	public open():void {
-		$htmlClasses.add('nav-open');
+	public open(): void {
+		$htmlClasses.add( 'nav-open' );
 		this._isOpen = true;
 	}
 
 	/**
 	 * Toggle Menu
 	 */
-	public toggleMenu():void{
-		if(this.opened){
+	public toggleMenu(): void {
+		if ( this.opened ) {
 			this.close();
-		}else{
+		} else {
 			this.open();
 		}
 	}
@@ -201,8 +201,8 @@ export class AlphaGlobalHeader implements AfterContentInit, AfterViewInit {
 	/**
 	 * Toggle Search Input
 	 */
-	public toggleSearchInput():void {
-		this.searchOpenClass = this.searchOpenClass === "open" ? "" : "open";
+	public toggleSearchInput(): void {
+		this.searchOpenClass = this.searchOpenClass === 'open' ? '' : 'open';
 	}
 
 }

@@ -17,10 +17,10 @@
       true,
       "rxjs"
     ],
-    "import-spacing": true,
+    "import-spacing": false,
     "indent": [
       true,
-      "spaces"
+      "tabs"
     ],
     "interface-over-type-literal": true,
     "label-position": true,
