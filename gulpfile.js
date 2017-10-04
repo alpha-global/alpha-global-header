@@ -1,38 +1,25 @@
-var gulp = require('gulp');
+const gulp = require('gulp');
 
-var rename = require('gulp-rename');
-var concat = require('gulp-concat-util');
-var minify = require('gulp-clean-css');
-var less = require('gulp-less');
-var watch = require("gulp-watch");
-var path = require('path');
-var rtFonts = require('gulp-rt-font-config');
+const rename = require('gulp-rename');
+const concat = require('gulp-concat-util');
+const minify = require('gulp-clean-css');
+const less = require('gulp-less');
+const watch = require("gulp-watch");
+const path = require('path');
+const rtFonts = require('gulp-rt-font-config');
 
 const LessPluginAutoprefix = require('less-plugin-autoprefix');
 
 //LESS plugins
 let lessAutoprefix = new LessPluginAutoprefix({ browsers: [ 'last 2 versions' ]});
 
-/*
-gulp.task("polymer", function(){
-	return gulp.src('wp-content/themes/alpha-donate/app/alpha-donate-app.html')
-    .pipe(vulcanize({
-		stripComments : true,
-		inlineScripts : true
-	})).
-	pipe(rename({
-		basename : "bundle"
-	}))
-    .pipe(gulp.dest('wp-content/themes/alpha-donate/app'));
-
-});
-*/
 
 /**
  * Polymer Styles
  */
 gulp.task("polymer-styles", function(){
 	return gulp.src("assets/less/styles/**/*.less")
+
 		.pipe(less({
 			plugins: [lessAutoprefix]
 		}))
@@ -56,9 +43,6 @@ gulp.task("angular-styles", function(){
 			plugins: [lessAutoprefix]
 		}))
 		//.pipe(minify())
-		//.pipe(rename({
-			//extname: '-styles.html'
-		//}))
 		.pipe(gulp.dest("assets/css"));
 });
 

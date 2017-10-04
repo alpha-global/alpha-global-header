@@ -1,16 +1,17 @@
 <link rel="import" href="../../../polymer/polymer.html">
 <link rel="import" href="../../assets/css/header-styles.html">
 
+<script src="../common/menu-width.js"></script>
+
 <dom-module id="alpha-global-header">
 
 	<template>
 
-		<style include="header-styles"></style>
+		<!-- this seems to be the best way to have our css variables be preserved -->
+		<link rel="stylesheet" href="../../assets/css/header.css" on-load="onLoadStyle">
 
 		<template is="dom-if" if="{{home}}">
-			<question-mark id="mobileLogo" href="[[home]]">
-				<div class="icon-logo"></div>
-			</question-mark>
+			<a class="question-mark icon-logo" id="mobileLogo" href="[[home]]"></a>
 		</template>
 
 		<div class="menu-wrapper">
@@ -20,20 +21,19 @@
 
  				<template is="dom-if" if="{{home}}">
 					 <div class="before-menu">
-						<question-mark href="[[home]]">
-							<div class="icon-logo"></div>
-						</question-mark>
+						<a class="question-mark icon-logo" href="[[home]]"></a>
 					</div>
 
 				</template>
 
-				<ul class="main-menu collapsible">
+				<ul id="mainMenu" class="main-menu collapsible">
 
 					<slot id="menuSlot"></slot>
 
 					<template is="dom-if" if="{{languages}}">
-						<li class="language-menu menu-item menu-item-has-children">
-							<a href="#">Global</a>
+						<li class="language-menu bg-darker menu-item menu-item-has-children">
+							<a class="icon-globe"></a>
+							<a class="language-menu-link" href="#">Languages</a>
 							<span class="sub-menu-toggle"></span>
 							<ul class="sub-menu">
 								<template is="dom-repeat" items="{{languages}}">
@@ -47,7 +47,7 @@
 
 					<template is="dom-if" if="{{search}}">
 						<li class="menu-item search-element search-element-toggle" on-click="toggleSearchInput">
-							<div class="menu-search-label icon-search"></div>
+							<a class="menu-search-label icon-search"></a>
 						</li>
 						<div id="menuSearchArea" class$="menu-search-area [[searchOpenClass]]">
 							<form class="menu-search" action="[[searchAction]]">
@@ -65,7 +65,7 @@
 		</div>
 
 
-    	<div class="menu-toggle"><i></i></div>
+    	<div class="menu-toggle" on-click="toggleMenu"><i></i></div>
 	</template>
 
 	<script>'use strict';
@@ -112,6 +112,23 @@
 
 				var _this = this;
 
+				// imported from menu-width.js
+				this.menuSizer = MWUtils.registerMenu( this.$.mainMenu, {
+
+					// map config properties to css vars
+					minItemSize : "@item-size",
+					itemPadding : "@item-padding",
+					fontSize : "@item-font-size",
+					reservedWidth : "@menu-reserved-width",
+
+					onCollapse : function() {
+						_this.classList.add( 'collapsed' );
+					},
+					onExpand : function() {
+						_this.classList.remove( 'collapsed' );
+					}
+				});
+
 				// add toggles
 				this.addSubMenuToggles();
 
@@ -129,17 +146,11 @@
 				});
 
 
-				//this.$element.on('click', '[data-sub-menu-toggle]', (event) => {this.toggleSubMenu(event);})
+			},
 
-				/**
-				* Set up menu toggle button listeners
-				*/
-
-				this.$.menuToggle = this.querySelector('.menu-toggle');
-				this.$.menuToggle.addEventListener('click', function(event){
-					_this.onToggleClick(event);
-				});
-
+			// header styles loaded, check the menu size
+			onLoadStyle : function(){
+				this.menuSizer.check();
 			},
 
 			/**
@@ -163,7 +174,6 @@
 
 				function createToggle(){
 					var tog = document.createElement("span");
-					tog.setAttribute("data-sub-menu-toggle", "");
 					tog.classList.add('sub-menu-toggle');
 					return tog;
 				}
@@ -206,9 +216,9 @@
 			},
 
 			/**
-			* Menu Toggle Clicked
+			* Toggle Menu
 			*/
-			onToggleClick : function(event){
+			toggleMenu : function(event){
 
 				if($htmlClasses.contains('nav-open')){
 					this.close();
