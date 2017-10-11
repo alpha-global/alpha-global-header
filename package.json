@@ -13,8 +13,13 @@
     "start": "npm run polymer:start | npm run angular:start",
     "build": "npm run polymer:build && npm run angular:build",
     "polymer:start": "npm run polymer:watch | polymer serve",
+
     "polymer:watch": "webpack --config src/polymer/webpack.config.polymer.js --progress --profile --bail --watch",
-    "polymer:build": "webpack --config src/polymer/webpack.config.polymer.js --progress --profile --bail",
+
+    "polymer:build": "npm run polymer:build:standalone && npm run polymer:build:bundle",
+    "polymer:build:standalone": "webpack --config src/polymer/webpack.config.polymer.js --progress --profile --bail",
+    "polymer:build:bundle": "webpack --config src/polymer/webpack.config.polymer.bundle.js --progress --profile --bail",
+
     "angular:start": "ng serve",
     "angular:build": "npm run angular:build:umd && npm run angular:build:esm",
     "angular:build:umd": "webpack --config src/angular/webpack.config.umd.js --progress --profile --bail",
