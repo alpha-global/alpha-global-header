@@ -2,25 +2,9 @@
   "name": "alpha-global-header",
   "private": true,
   "dependencies": {
-    "polymer": "Polymer/polymer",
-    "iron-selector": "",
-    "iron-resizable-behavior": "",
-    "iron-jsonp-library": "",
-    "iron-pages": "^1.0.8",
-    "iron-form": "^1.1.4",
-    "iron-ajax": "^1.4.3",
-    "paper-button": "^1.0.14",
-    "neon-animation": "^1.2.4",
-    "iron-flex-layout": "^1.3.2",
-    "paper-item": "PolymerElements/paper-item",
-    "paper-styles": "^1.2.0",
-    "web-animations-js": "web-animations/web-animations-js#^2.2.2",
-    "google-map": "^1.2.0",
-    "geo-location": "^1.0.6",
-    "google-map-markerclusterer": "^1.0.2",
-    "moment": "momentjs#^2.18.1"
+    "polymer": "Polymer/polymer"
   },
-  "main": "src/polymer/alpha-global-header.html",
+  "main": "dist/polymer/alpha-global-header.js",
   "authors": [
     "Patrick Baldwin <pat@relentlesstechnology.com>"
   ],
@@ -29,8 +13,15 @@
   "homepage": "",
   "ignore": [
     "**/.*",
+    "gulpfile.js",
+    "polymer.json",
+    "index.html",
+    "dist/angular",
     "node_modules",
     "bower_components",
+    "demo",
+    "src",
+    "assets",
     "test",
     "tests"
   ]
