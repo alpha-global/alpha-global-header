@@ -23,6 +23,10 @@
 @menuReservedWidth : 84px; // the logo is only required space
 @menuHeight : 84px;
 
+html.nav-open body{
+	overflow: hidden;
+}
+
 /**
 *	<alpha-global-header> styles
 */
@@ -40,6 +44,7 @@ alpha-global-header {
 	left:0px;
 	width:100%;
 	height: @menuHeight;
+	line-height:1;
 	font-family: "ITCAvantGardeStd", "Century Gothic", sans-serif;
 
 	a {
@@ -440,7 +445,7 @@ alpha-global-header {
 			display:inline-flex;
 			justify-content: center;
 			align-items:center;
-			margin:13px 0 0 5px;
+			margin:13px 0 0 -5px;
 			height:auto;
 			padding:10px;
 			&::before{
@@ -510,15 +515,9 @@ alpha-global-header {
 		.main-menu{
 
 			text-align:center;
-			//height:100vh;
 			overflow-y:auto;
 			display:block;
 			padding-top:50px;
-
-			//display:flex;
-			//flex-flow: column wrap;
-			//justify-content:center;
-
 
 			/** Top level elements */
 			> li {
@@ -549,6 +548,7 @@ alpha-global-header {
 					}
 					.language-menu-link {
 						font-size:24px;
+						padding:8px 15px;
 					}
 				}
 

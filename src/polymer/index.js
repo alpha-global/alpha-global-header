@@ -13,7 +13,7 @@ window.registerMenu = registerMenu;
 
 // create style element for the style text
 var styleEl = document.createElement('style');
-styleEl.innerText = styleText;
+styleEl.innerHTML = styleText;
 document.head.appendChild(styleEl);
 
 // import the rest of the component

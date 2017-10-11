@@ -5,7 +5,7 @@
   "main": "./dist/angular/umd/index.js",
   "module": "./dist/angular/umd/index.js",
   "files": [
-    "dist"
+    "dist/angular"
   ],
   "typings": "./dist/angular/esm/index.d.ts",
   "scripts": {
