@@ -1,4 +1,4 @@
-@import (inline) "../imports/AlphaIcons.css";
+@import (inline) "../imports/fonts.min.css";
 
 @red: #e42312;
 
@@ -35,9 +35,11 @@ alpha-global-header {
 
 	display:block;
 	position:fixed;
+	top:0;
+	left:0px;
 	width:100%;
 	height: @menuHeight;
-	font-family: var(--alpha-header-font-family, "Century Gothic");
+	font-family: "ITCAvantGardeStd", "Century Gothic", sans-serif;
 
 	a {
 		text-decoration: none;
@@ -79,7 +81,7 @@ alpha-global-header {
 		height:100%;
 	}
 
-	.menu-item{
+	li {
 		a {
 
 			color:@headerLinkColour;
@@ -95,7 +97,7 @@ alpha-global-header {
 		margin:0;
 
 		/** Top level list elements **/
-		> .menu-item {
+		> li {
 
 			/** link inside top level element **/
 			> a{
@@ -254,7 +256,7 @@ alpha-global-header {
 			}
 
 		}
-		.menu-item{
+		li{
 
 			&:hover{
 				> a {
@@ -294,7 +296,7 @@ alpha-global-header {
 			flex : 0 1 1116px;
 
 			/** Top level menu items **/
-			> .menu-item {
+			> li {
 
 				border-bottom:1px solid @borderColour;
 
@@ -331,10 +333,6 @@ alpha-global-header {
 						border-bottom:1px solid #fff;
 					}
 
-				}
-
-				&.menu-item-type-login a{
-					background-color:#fafafa;
 				}
 			}
 		}
@@ -455,7 +453,7 @@ alpha-global-header {
 
 		}
 
-		.menu-item {
+		li {
 
 			border:none;
 			display:block;
@@ -499,7 +497,7 @@ alpha-global-header {
 
 			color:@mobileMenuLinkColour;
 
-			.menu-item {
+			li {
 				a {
 					border:none;
 
@@ -522,7 +520,7 @@ alpha-global-header {
 
 
 			/** Top level elements */
-			> .menu-item {
+			> li {
 
 				margin-bottom:10px;
 				width:100%;

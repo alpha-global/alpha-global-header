@@ -1,18 +1,4 @@
 
-(function (global, factory) {
-    if (typeof define === "function" && define.amd) {
-        define(['module', 'exports'], factory);
-    } else if (typeof exports !== "undefined") {
-        factory(module, exports);
-    } else {
-        var mod = {
-            exports: {}
-        };
-        factory(mod, mod.exports, global.utils);
-        global.MWUtils = mod.exports;
-    }
-})(this, function (module, exports, _require) {
-
 
 	function merge( obj, defaultProps ){
 		for(let prop in defaultProps){
@@ -69,7 +55,7 @@
 	 */
 	function getContext2d(font) {
 		try {
-			var ctx = document.createElement('canvas').getContext('2d');
+			var ctx:any = document.createElement('canvas').getContext('2d');
 			var dpr = window.devicePixelRatio || 1;
 			var bsr = ctx.webkitBackingStorePixelRatio ||
 					ctx.mozBackingStorePixelRatio ||
@@ -117,7 +103,7 @@
 	 * @param {*} font
 	 * @param {*} overwrites
 	 */
-	function measureWidth( text, font, overwrites = {}  ) {
+	function measureWidth( text, font, overwrites:any = {}  ) {
 
 		var letterSpacing = overwrites.letterSpacing || 0;
 		var wordSpacing = overwrites.wordSpacing || 0;
@@ -151,7 +137,7 @@
 				continue;
 			}
 
-			var link = liEl.firstElementChild,
+			var link = liEl.firstElementChild || liEl,
 				text = link.textContent,
 				needed;
 
@@ -205,7 +191,7 @@
 	 * @param {*} menu
 	 * @param {*} options
 	 */
-	function registerNavMenu( menu, options ) {
+	function registerMenu( menu, options ) {
 
 		var defaults = {
 			minItemSize : 10,
@@ -236,6 +222,9 @@
 					itemPadding : itemPadding * 2,
 					minItemWidth : minItemSize
 				} );
+
+			// small adjustment
+			minWidthNeeded += 16;
 
 
 			//console.info('need at least: ' + minWidthNeeded + ' have available ' + availWidth)
@@ -271,23 +260,7 @@
 
 	}
 
-
-
-
-    exports.default = function ( text, font, overwrites ) {
-        return getMinMenuWidth( text, font, overwrites );
-    };
-
-	module.exports = {
-
-		getMinMenuWidth : function ( text, font, overwrites ) {
-        	return getMinMenuWidth( text, font, overwrites );
-		},
-
-		registerMenu : function ( menu, options ) {
-        	return registerNavMenu( menu, options );
-		}
-	};
-
-});
-
+export {
+	getMinMenuWidth,
+	registerMenu
+}

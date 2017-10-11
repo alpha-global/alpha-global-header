@@ -4,17 +4,19 @@
     "name": "alpha-global-header"
   },
   "apps": [
+
     {
+      "name" : "demo-build",
       "root": "demo/angular/src",
-      "outDir": "src/angular/dist",
+      "outDir": "dist/angular/demo",
+
       "index": "index.html",
       "main": "main.ts",
       "polyfills": "polyfills.ts",
       "test": "test.ts",
-      "tsconfig": "tsconfig.app.json",
+      "tsconfig": "tsconfig.demo.json",
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "app",
-
       "environmentSource": "environments/environment.ts",
       "environments": {
         "dev": "environments/environment.ts",
@@ -28,18 +30,7 @@
     }
   },
   "lint": [
-    {
-      "project": "./demo/angular/src/tsconfig.app.json",
-      "exclude": "**/node_modules/**"
-    },
-    {
-      "project": "./demo/angular/src/tsconfig.spec.json",
-      "exclude": "**/node_modules/**"
-    },
-    {
-      "project": "./demo/angular/e2e/tsconfig.e2e.json",
-      "exclude": "**/node_modules/**"
-    }
+
   ],
   "test": {
     "karma": {

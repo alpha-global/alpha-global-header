@@ -1,14 +1,6 @@
-<link rel="import" href="../../../polymer/polymer.html">
-<link rel="import" href="../../assets/css/header-styles.html">
-
-<script src="../common/menu-width.js"></script>
-
 <dom-module id="alpha-global-header">
 
 	<template>
-
-		<!-- this seems to be the best way to have our css variables be preserved -->
-		<link rel="stylesheet" href="../../assets/css/header.css" on-load="onLoadStyle">
 
 		<template is="dom-if" if="{{home}}">
 			<a class="question-mark icon-logo" id="mobileLogo" href="[[home]]"></a>
@@ -70,28 +62,7 @@
 
 	<script>'use strict';
 
-		var $htmlClasses = window.document.documentElement.classList;
-
-		/**
-		* Function to add dom classes for css styling
-		*/
-		function addDomClasses(){
-
-		   var prefixes = 'transform WebkitTransform MozTransform OTransform msTransform'.split(' ');
-		   var div = document.createElement('div');
-		   var classes = "nocsstransforms3d";
-		   for(var i = 0; i < prefixes.length; i++) {
-			   if(div && div.style[prefixes[i]] !== undefined) {
-				   classes = "csstransforms3d";
-				   break;
-			   }
-		   }
-		   $htmlClasses.add(classes);
-
-		}
-
-
-		addDomClasses();
+	var $htmlClasses = window.document.documentElement.classList;
 
 	Polymer({
         is : 'alpha-global-header',
@@ -113,7 +84,7 @@
 				var _this = this;
 
 				// imported from menu-width.js
-				this.menuSizer = MWUtils.registerMenu( this.$.mainMenu, {
+				this.menuSizer = registerMenu( this.$.mainMenu, {
 
 					// map config properties to css vars
 					minItemSize : "@item-size",
@@ -132,42 +103,11 @@
 				// add toggles
 				this.addSubMenuToggles();
 
-				// firefox sucks, we need to add the style scope to all rendered contents
-				let elements = this.queryAllEffectiveChildren('*');
-
-				for(var i = 0; i < elements.length; i++){
-					let element = elements[i];
-					this.applyShadowStyles(element);
-				}
-
-
 				this.addEventListener('click', function(event) {
 					_this.onSiteMenuClick(event);
 				});
 
 
-			},
-
-			// header styles loaded, check the menu size
-			onLoadStyle : function(){
-				this.menuSizer.check();
-			},
-
-			/**
-			 * Apply shady-css classes so that our stylesheets apply to content passed in
-			 */
-			applyShadowStyles : function(element) {
-
-				element.classList.add("alpha-global-header");
-				element.classList.add("style-scope");
-
-				let elements =  element.querySelectorAll('*');
-
-				for(var i = 0; i < elements.length; i++){
-					let _element = elements[i];
-					this.applyShadowStyles(_element);
-
-				}
 			},
 
 			addSubMenuToggles : function(){

@@ -14,7 +14,7 @@ import {
 
 } from '@angular/core';
 
-import { registerMenu } from '../../common/menu-width';
+import { registerMenu } from './util/menu-width';
 
 const $htmlClasses = window.document.documentElement.classList;
 
@@ -28,7 +28,7 @@ export class SubMenu  {}
 @Component( {
 	selector : 'alpha-global-header',
 	template : `
-	<a *ngIf="home" class="question-mark icon-logo" id="mobileLogo" href="[[home]]"></a>
+	<a *ngIf="home" class="question-mark icon-logo" id="mobileLogo" [routerLink]="home"></a>
 	<div class="menu-wrapper">
 		<div class="menu-container">
 
@@ -36,7 +36,7 @@ export class SubMenu  {}
 
 
 			<div *ngIf="home" class="before-menu">
-				<a class="question-mark icon-logo" href="[[home]]"></a>
+				<a class="question-mark icon-logo" [routerLink]="home"></a>
 			</div>
 
 			<ul #mainMenu class="main-menu collapsible">
@@ -95,7 +95,7 @@ export class AlphaGlobalHeader implements AfterContentInit, AfterViewInit {
 	// menu container
 	@ViewChild('mainMenu') mainMenu: ElementRef;
 
-	@Input('home') home: string;
+	@Input('home') home: Array<string>;
 	@Input('search') search: boolean;
 	@Input('searchAction') searchAction: string;
 	@Input('languages') languages: Array< any >;
