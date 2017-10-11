@@ -8723,7 +8723,7 @@ Polymer({
 			_this.onSiteMenuClick(event);
 		});
 
-		this.menuSizer.check();
+		requestAnimationFrame(this.menuSizer.check);
 	},
 
 	addSubMenuToggles: function () {
