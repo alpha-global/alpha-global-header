@@ -3,66 +3,34 @@
 	<template>
 
 		<template is="dom-if" if="{{home}}">
-			<a class="question-mark icon-logo" id="mobileLogo" href="[[home]]"></a>
+			<a class="question-mark agh-icon-logo" id="mobileLogo" href="[[home]]"></a>
 		</template>
 
-		<div class="menu-wrapper">
-      		<div class="menu-container">
+		<div class="menu-container">
 
-				<span id="closeButton" class="icon-close-thin" on-click="close"></span>
+			<template is="dom-if" if="{{home}}">
 
- 				<template is="dom-if" if="{{home}}">
-					 <div class="before-menu">
-						<a class="question-mark icon-logo" href="[[home]]"></a>
-					</div>
+				<div class="before-menu">
+					<a class="question-mark agh-icon-logo" href="[[home]]"></a>
+				</div>
 
-				</template>
+			</template>
 
-				<ul id="mainMenu" class="main-menu collapsible">
+			<div class="menu-area">
+
+				<ul id="mainMenu" menu-container class="main-menu">
 
 					<slot id="menuSlot"></slot>
-
-					<template is="dom-if" if="{{languages}}">
-						<li class="language-menu bg-darker menu-item menu-item-has-children">
-							<a class="icon-globe"></a>
-							<a class="language-menu-link" href="#">Languages</a>
-							<span class="sub-menu-toggle"></span>
-							<ul class="sub-menu">
-								<template is="dom-repeat" items="{{languages}}">
-									<li class="menu-item "><a href="[[item.href]]">[[item.label]]</a></li>
-								</template>
-
-
-							</ul>
-						</li>
-					</template>
-
-					<template is="dom-if" if="{{search}}">
-						<li class="menu-item search-element search-element-toggle" on-click="toggleSearchInput">
-							<a class="menu-search-label icon-search"></a>
-						</li>
-						<div id="menuSearchArea" class$="menu-search-area [[searchOpenClass]]">
-							<form class="menu-search" action="[[searchAction]]">
-								<div class="menu-search-input-wrapper">
-									<input class="menu-search-input" type="text" name="s" value="" placeholder="Search">
-								</div>
-								<div class="search-form-close icon-close-thin" on-click="toggleSearchInput"></div>
-							</form>
-						</div>
-					</template>
 
 				</ul>
 
 			</div>
+
 		</div>
 
-
-    	<div class="menu-toggle" on-click="toggleMenu"><i></i></div>
 	</template>
 
 	<script>'use strict';
-
-	var $htmlClasses = window.document.documentElement.classList;
 
 	Polymer({
         is : 'alpha-global-header',
@@ -74,115 +42,28 @@
 				search : Boolean,
 				searchAction : String
 			},
-			parseSettings : function(){
 
-			},
 			ready : function(){
 
-				this.parseSettings();
-
-				var _this = this;
+				// apply styles on demand
+				_aghRegisterStyles();
 
 				// imported from menu-width.js
-				this.menuSizer = registerMenu( this.$.mainMenu, {
+				this.alphaHeader = new AlphaHeader( this, {
 
 					// map config properties to css vars
 					minItemSize : "@item-size",
 					itemPadding : "@item-padding",
 					fontSize : "@item-font-size",
 					reservedWidth : "@menu-reserved-width",
-
-					onCollapse : function() {
-						_this.classList.add( 'collapsed' );
-					},
-					onExpand : function() {
-						_this.classList.remove( 'collapsed' );
-					}
+					search : this.search ? { action : this.searchAction } : false,
+					languages : this.languages
 				});
 
-				// add toggles
-				this.addSubMenuToggles();
-
-				this.addEventListener('click', function(event) {
-					_this.onSiteMenuClick(event);
-				});
-
-				requestAnimationFrame(this.menuSizer.check);
+				requestAnimationFrame(() => this.alphaHeader.check() );
 
 			},
 
-			addSubMenuToggles : function(){
-
-				function createToggle(){
-					var tog = document.createElement("span");
-					tog.classList.add('sub-menu-toggle');
-					return tog;
-				}
-
-				var subSelector = '.menu-item-has-children > a';
-
-				var childContainers = this.querySelectorAll(subSelector);
-
-				childContainers.forEach(function(item) {
-					item.parentNode.insertBefore(createToggle(), item.nextSibling);
-				});
-			},
-
-			open : function(){
-			   $htmlClasses.add('nav-open');
-			   this.classList.add('open');
-			},
-			/**
-			* Close the Menu
-			*/
-			close : function(){
-			   $htmlClasses.remove('nav-open');
-			   this.classList.remove('open');
-			},
-
-			/**
-			* On Site Menu Clicked
-			*/
-			onSiteMenuClick : function(event){
-
-				if(event.target.classList.contains("alpha-menu-wrapper") || event.target.attributes.getNamedItem("data-menu-close-button")){
-
-					this.close();
-
-				}else if(event.target.classList.contains('sub-menu-toggle')){
-
-					this.toggleSubMenu(event);
-
-				}
-			},
-
-			/**
-			* Toggle Menu
-			*/
-			toggleMenu : function(event){
-
-				if($htmlClasses.contains('nav-open')){
-					this.close();
-				}else{
-					this.open();
-				}
-			},
-
-			toggleSearchInput : function(){
-				this.searchOpenClass = this.searchOpenClass === "open" ? "" : "open";
-			},
-
-			/**
-			* Sub Menu Toggle Clicked
-			*/
-			toggleSubMenu : function(event){
-				var menu = event.target.parentNode;
-				if(menu.classList.contains("open")){
-					menu.classList.remove("open");
-				}else{
-					menu.classList.add("open");
-				}
-			}
 		});
 	</script>
 

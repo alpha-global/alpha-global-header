@@ -9,10 +9,14 @@
 @mobileMenuLinkColour : #fff;
 @mobileMenuLinkHoverColour : @red;
 
+@searchInputColour : #5d6368;
+
+@borderColour : #dfdfdf;
+@bgDark : #f9f9f9;
+
 @onePXBiggerThanMobile : (@mobileMenuBreakWidth + 1);
 
 @mobileMenuBreakWidth : 768px;
-@borderColour : #dfdfdf;
 
 /**
  * These values help control the size of the menu and are used to calculate the available widths
@@ -22,9 +26,31 @@
 @itemFontSize : 18px;
 @menuReservedWidth : 84px; // the logo is only required space
 @menuHeight : 84px;
+@collapsedHeight: 84px;
+@mobileHeight: 58px;
 
-html.nav-open{
-	overflow: hidden;
+/**
+ * Style html element to pad based off the height of the nav
+*/
+html{
+
+	--menu-height : @menuHeight;
+
+	&.nav-open {
+		overflow: hidden;
+		.menu-toolbar {
+			display:none !important;
+		}
+	}
+	&.nav-collapsed {
+
+		--menu-height : @collapsedHeight;
+
+	}
+
+	body {
+		padding-top: var(--menu-height);
+	}
 }
 
 /**
@@ -46,6 +72,7 @@ alpha-global-header {
 	height: @menuHeight;
 	line-height:1;
 	font-family: "ITCAvantGardeStd", "Century Gothic", sans-serif;
+	color:#000;
 
 	a {
 		text-decoration: none;
@@ -56,7 +83,6 @@ alpha-global-header {
 		padding:0;
 		margin:0;
 		list-style:none;
-
 		position:relative;
 	}
 
@@ -69,7 +95,7 @@ alpha-global-header {
 		cursor:pointer;
 
 		color: @red;
-		font-size:35px;
+		font-size:45px;
 
 		display:flex;
 		align-items:center;
@@ -96,14 +122,124 @@ alpha-global-header {
 
 	}
 
+	[menu-icon] {
+
+		cursor: pointer;
+		max-width:var(--item-size);
+		font-size:22px;
+
+		transition: color 0.2s ease-out;
+
+		&:hover::before{
+			color: @red;
+		}
+
+		&::before {
+			font-family: "AlphaIcons";
+			content: attr(menu-icon);
+			font-weight:normal;
+			position: relative;
+			z-index:50;
+			transition:color 0.2s ease-out;
+		}
+
+	}
+
+	// search icon has to be a bit smaller, for some reason the glyph is too small
+	.search-icon{
+		font-size:26px;
+	}
+
+
+	/**
+	 *	This selects the icons in the toolbar, and the main menu items when not collapsed
+	*/
+	&:not(.collapsed) .main-menu > *, .menu-toolbar > * {
+
+		&::before{
+			position: relative;
+			z-index:50;
+		}
+
+		&::after{
+
+			content:"";
+			background:#fff;
+
+			position: absolute;
+			z-index:32;
+			display:block;
+			width:100%;
+			height:100%;
+			border-left:1px solid @borderColour;
+			border-right:1px solid @borderColour;
+
+		}
+
+		&:not(.menu-btn):hover, .sub-menu li:hover {
+			> a {
+				color:@headerLinkHoverColour;
+			}
+
+		}
+
+		&.menu-item-has-children {
+
+			&:hover{
+				border-bottom:1px solid #fff;
+
+				> .sub-menu {
+					transform : translateY(0);
+					height:auto;
+					border:1px solid @borderColour;
+					border-top:none;
+				}
+
+			}
+			.sub-menu {
+
+				overflow:hidden;
+
+				position:absolute;
+				z-index:30;
+				left:0;
+				top:var(--item-size);
+
+				min-width:max-content;
+				width:100%;
+				height:0;
+				padding:0;
+
+				background:#fff;
+
+				transform : translateY(-100%);
+				transition : transform 0.2s ease-out;
+
+				a{
+					padding:12px 20px;
+					&:hover{
+						background:@bgDark;
+					}
+				}
+
+			}
+		}
+
+	}
+
 	.main-menu{
 
 		display:flex;
 		flex-flow: row nowrap;
 		margin:0;
+		font-size: var(--item-font-size);
 
 		/** Top level list elements **/
-		> li {
+		> *:not(template) {
+
+			font-weight:600;
+			letter-spacing:.36px;
+			position:relative;
 
 			/** link inside top level element **/
 			> a{
@@ -116,37 +252,9 @@ alpha-global-header {
 				height:100%;
 				box-sizing:border-box;
 
-				font-size: var(--item-font-size);
-				font-weight:600;
-				letter-spacing:.36px;
-
 				display:flex;
 				align-items:center;
 				flex-flow : row wrap;
-			}
-
-			&.search-element{
-
-				max-width:var(--item-size);
-
-				.menu-search-label{
-					font-size:24px;
-					@media (min-width:1024px){
-						font-size:27px;
-					}
-
-				}
-			}
-
-			&.language-menu{
-
-				max-width:var(--item-size);
-				.language-menu-link {
-
-					font-size:0;
-					padding:0;
-
-				}
 			}
 
 		}
@@ -154,12 +262,34 @@ alpha-global-header {
 
 	.sub-menu {
 
-		a {
-			font-weight:100;
-		}
+		font-size:16px;
+		font-weight:200;
 	}
 
 
+	.menu-toggle{
+
+		background-color:@bgDark;
+
+		&:hover{
+			i, &::before, &::after{
+				background-color:@red;
+			}
+		}
+
+		i, &::before, &::after{
+			height:2px;
+			margin:4px 0;
+			display:block;
+			background-color:#000;
+			position: static;
+			width:33%;
+			transition: background-color 0.2s ease-out;
+		}
+		&::before, &::after{
+			content:"";
+		}
+	}
 
 	/** Slide out search component */
 	.menu-search-area{
@@ -167,6 +297,7 @@ alpha-global-header {
 		position:absolute;
 		z-index:300;
 		left:100%;
+		top:0;
 		height:100%;
 		width:100%;
 		background:#fff;
@@ -176,6 +307,7 @@ alpha-global-header {
 		form {
 			height:100%;
 			display:flex;
+			flex-grow:1;
 		}
 
 		&.open{
@@ -197,21 +329,28 @@ alpha-global-header {
 		}
 		.menu-search-input{
 			font-size:20px;
+			color: @searchInputColour;
 			border:none;
 			border-bottom:1px solid @borderColour;
+			background-color : @bgDark;
 			height: 100%;
 			width: 100%;
 			margin: 0;
-			padding: 20px;
+			padding: 20px 50px;
 			box-sizing: border-box;
+			&:focus{
+				outline:none;
+			}
 		}
 
 	}
 
-
+	/**
+	 * Specifically for full widths
+	*/
 	&:not(.collapsed) {
 
-		.menu-toggle{
+		.menu-toolbar{
 			display:none;
 		}
 		#mobileLogo{
@@ -231,78 +370,40 @@ alpha-global-header {
 
 		}
 
-		.question-mark {
-			font-size:45px;
-		}
+		.menu-btn{
 
-		.sub-menu {
+			background-color:@red;
+			transition : background-color 150ms ease-in-out;
 
-			overflow:hidden;
-
-			position:absolute;
-			z-index:30;
-			left:0;
-			top:var(--item-size);
-
-			min-width:max-content;
-			width:100%;
-			height:0;
-			padding:0;
-
-			background:#fff;
-
-			transform : translateY(-100%);
-			transition : transform 0.2s ease-out;
-
-			a{
-				padding:12px 20px;
-				&:hover{
-					background:#fafafa;
-				}
+			&:after{
+				content : none !important;
 			}
-
-		}
-		li{
 
 			&:hover{
-				> a {
-					color:@headerLinkHoverColour;
-				}
-				> .sub-menu {
-					transform : translateY(0);
-					height:auto;
-					border:1px solid @borderColour;
-					border-top:none;
-				}
-			}
-			&.menu-btn{
-
-				background-color:@red;
-				transition : background-color 150ms ease-in-out;
-
-				&:after{
-					content : none !important;
-				}
-
-				&:hover{
-					background-color:#b51c0e;
-				}
-
-				a{
-					color:white;
-					line-height: 1.8;
-				}
-
+				background-color:#b51c0e;
 			}
 
+			a{
+				color:white;
+				line-height: 1.8;
+			}
+
+		}
+
+
+
+		.menu-area {
+			flex : 0 1 1180px;
+			position: relative;
 		}
 		.main-menu{
 
 			justify-content: flex-end;
-			flex : 0 1 1116px;
+			height:100%;
+
 
 			/** Top level menu items **/
-			> li {
+			> *:not(template) {
 
 				border-bottom:1px solid @borderColour;
 
@@ -312,112 +413,70 @@ alpha-global-header {
 				flex: 1 0 auto;
 				min-width:var(--item-size);
 
-				&::after{
-
-					content:"";
-					background:#fff;
-
-					position: absolute;
-					z-index:32;
-					display:block;
-					width:100%;
-					height:100%;
-					border-left:1px solid @borderColour;
-					border-right:1px solid @borderColour;
-
-				}
-
 				&.bg-darker{
 					&::after{
-						background-color:#fafafa;
+						background-color:@bgDark;
 					}
 				}
 
-				&.menu-item-has-children{
-
-					&:hover{
-						border-bottom:1px solid #fff;
-					}
-
-				}
 			}
 		}
 	}
 
 
 	/**
-	 Mobile Nav
+	 Collapsed Icon Nav
 	**/
 	&.collapsed {
 
 		display: flex;
-		height:58px;
+		height:@collapsedHeight;
 		justify-content: space-between;
 		background:#fff;
 		border-bottom:1px solid @borderColour;
 
 		&.open {
-			.menu-wrapper{
-				background:rgba(0,0,0,1);
-				height:100%;
-				visibility: visible;
+
+			.main-menu {
+				display: flex;
 			}
-		}
-
-		.menu-toggle {
-
-			cursor:pointer;
-
-			padding-left:11px;
-			padding-right:11px;
-			width:30px;
-
-			display: flex;
-			flex-flow: column nowrap;
-			justify-content: center;
-
-			i, &:before, &:after{
-				background:black;
+			#closeButton {
 				display:block;
-				border-radius: 4px;
-				width:100%;
-				height:4px;
-				content:"";
-				margin:2px 0;
+				position:absolute;
+				right:0;
+				z-index:100;
+				font-size:26px;
+				padding:15px;
+				line-height:80%;
+				cursor:pointer;
+				color:#fff;
 			}
 		}
 
-		.menu-wrapper{
+		.menu-toolbar{
+			display: flex;
+			flex-flow: row nowrap;
+			flex-grow: 1;
+			justify-content: flex-end;
+			position:relative;
+			> *:not(template) {
+				min-width: var(--menu-height);
+				height:100%;
+				display:flex;
+				flex-flow: column nowrap;
+				justify-content: center;
+				align-items:center;
+				border-left:1px solid @borderColour;
 
-			position: fixed;
-			top:0;
-			z-index:100;
+				position: relative;
 
-			width:100%;
-			height:0;
-
-			overflow-y:scroll;
-			visibility: hidden;
-
-			background:#000;
-			border:none;
-
-			transition : background 0.3s ease-out;
-
+			}
 		}
-
-
 
 		.menu-search-area{
-			display: none;
-			position:static;
-			height:auto;
-			margin-bottom:20px;
-			.search-form-close{
-				display:none;
-			}
+
 			.menu-search-input{
-				border:1px solid #dfdfdf;
+				border:none;
 			}
 		}
 
@@ -425,22 +484,6 @@ alpha-global-header {
 			display:none;
 		}
 
-		.sub-menu{
-			margin:20px 0;
-			position:static;
-			visibility: visible;
-			display:none;
-			background:none;
-			border:none;
-			width:100%;
-			transform:none;
-
-			a{
-				padding:8px 0;
-				font-size: var(--item-font-size); // use the font size of the main nav items in expanded
-			}
-
-		}
 		.sub-menu-toggle {
 			cursor:pointer;
 			position: absolute;
@@ -461,6 +504,11 @@ alpha-global-header {
 
 		}
 
+		.menu-btn{
+
+			color:@red;
+		}
+
 		li {
 
 			border:none;
@@ -474,36 +522,10 @@ alpha-global-header {
 
 			}
 
-			&.search-element{
-				display:none;
-			}
-
-			&.menu-btn{
-
-				color:@red;
-			}
-
-			&.open {
-				> .sub-menu{
-					display:block;
-				}
-				.sub-menu-toggle {
-					&::before{
-
-						border-top: none;
-						border-left: 6px solid transparent;
-						border-right: 6px solid transparent;
-						border-bottom: 6px solid #fff;
-					}
-				}
-			}
 		}
 
 
 		.menu-container{
-			background:@mobileMenuBackgroundColour;
-
-			color:@mobileMenuLinkColour;
 
 			li {
 				a {
@@ -514,59 +536,110 @@ alpha-global-header {
 
 		}
 
-		.main-menu{
+		.main-menu {
 
-			text-align:center;
+			position: fixed;
+			top: 0;
+			left: 0;
+			z-index:50;
+
+			width:100%;
+			height:100%;
 			overflow-y:auto;
-			display:block;
-			padding-top:50px;
+
+			display:none;
+			flex-flow: column nowrap;
+			justify-content: center;
+
+			background:#000;
+			color:#fff;
+			text-align:center;
+
+			a {
+				padding-top:8px;
+				padding-bottom:8px;
+				color:inherit;
+			}
+
+			[menu-icon] {
+
+				max-width:none;
+
+				&:hover::before {
+					color:inherit;
+				}
+
+				&::before{
+					font-family: inherit;
+					font-weight:inherit;
+					content : attr(menu-title);
+					display:inline-block;
+				}
+				&:not(a)::before{
+					padding:8px 15px;
+				}
+
+			}
+
 
 			/** Top level elements */
-			> li {
+			> *:not(template) {
 
 				margin-bottom:10px;
 				width:100%;
 				flex:initial;
+				font-size:24px;
 
 				/** link inside top level elements **/
 				> a{
 					display:inline-block;
-					font-size:24px;
+					font-size:inherit;
 					flex-grow:0;
-					padding-top:8px;
-					padding-bottom:8px;
 					height:auto;
 				}
 
-				// is here because of specificity
-				&.language-menu{
-					max-width: none;
-					a {
-						border:none;
-						background:none;
+				&.open {
+					> .sub-menu{
+						display:block;
 					}
-					.icon-globe{
-						display: none;
-					}
-					.language-menu-link {
-						font-size:24px;
-						padding:8px 15px;
+					.sub-menu-toggle {
+						&::before{
+
+							border-top: none;
+							border-left: 6px solid transparent;
+							border-right: 6px solid transparent;
+							border-bottom: 6px solid #fff;
+						}
 					}
 				}
 
 			}
+
+			// submenus within the main menu become blocks again
+			.sub-menu{
+				margin:20px 0;
+				position:static;
+				visibility: visible;
+				display:none;
+				background:none;
+				border:none;
+				width:100%;
+				transform:none;
+				font-size: var(--item-font-size); // use the font size of the main nav items in expanded
+
+			}
 		}
 
-		#closeButton {
-			display:block;
-			position:absolute;
-			right:0;
-			z-index:100;
-			font-size:26px;
-			padding:15px;
-			line-height:80%;
-			cursor:pointer;
+	}
+
+	&.minified {
+		.menu-toolbar {
+			> *:not( .menu-toggle ) {
+				display:none;
+
+			}
 		}
+
 	}
 
 }

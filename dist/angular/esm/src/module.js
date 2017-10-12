@@ -1,21 +1,17 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { AlphaGlobalHeader, MenuItem, SubMenu } from './alpha-global-header.component';
+import { AlphaGlobalHeader } from './alpha-global-header.component';
 var AlphaGlobalHeaderModule = /** @class */ (function () {
     function AlphaGlobalHeaderModule() {
     }
     AlphaGlobalHeaderModule.decorators = [
         { type: NgModule, args: [{
                     declarations: [
-                        AlphaGlobalHeader,
-                        MenuItem,
-                        SubMenu
+                        AlphaGlobalHeader
                     ],
                     exports: [
                         AlphaGlobalHeader,
-                        MenuItem,
-                        SubMenu,
                         RouterModule
                     ],
                     imports: [

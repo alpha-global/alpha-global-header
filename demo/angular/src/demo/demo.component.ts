@@ -10,8 +10,16 @@ import { Component } from '@angular/core';
       [search]="true"
       search-action="https://www.alphacanada.org"
   >
+            <li  class="menu-item menu-item-has-children">
+                <a i18n="common.resources|Preview Resources Label@@previewResourcesLabel">Dashboard</a>
 
-    <li  class="menu-item">
+                <ul class="sub-menu">
+                    <li><a>Test</a></li>
+                    <li><a>Test 2</a></li>
+
+                </ul>
+            </li>
+            <li  class="menu-item">
                 <a i18n="common.resources|Preview Resources Label@@previewResourcesLabel">Preview Resources</a>
             </li>
             <li class="menu-item">
@@ -23,6 +31,7 @@ import { Component } from '@angular/core';
             <li class="menu-btn menu-item tablet">
                 <a  i18n="common.buttons|Create an Alpha@@buttonCreateAlpha">Create an Alpha</a>
             </li>
+            <a class="bg-darker" menu-icon="x" menu-title="My Profile" toolbar-item></a>
 
   </alpha-global-header>
   `
