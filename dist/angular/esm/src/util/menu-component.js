@@ -190,7 +190,7 @@ var AlphaHeader = /** @class */ (function () {
      */
     AlphaHeader.prototype.check = function () {
         // extract the supported values
-        var reservedWidth = getValueOrVariableInt(this.options.reservedWidth, this.menuContainer) || this.defaults.reservedWidth, minItemSize = getValueOrVariableInt(this.options.minItemSize, this.menuContainer) || this.defaults.minItemSize, itemPadding = getValueOrVariableInt(this.options.itemPadding, this.menuContainer) || this.defaults.itemPadding, fontSize = getValueOrVariable(this.options.fontSize, this.menuContainer) || this.defaults.fontSize;
+        var reservedWidth = getValueOrVariableInt(this.options.reservedWidth, this.menuContainer) || this.defaults.reservedWidth, minItemSize = getValueOrVariableInt(this.options.minItemSize, this.menuContainer) || this.defaults.minItemSize, toolBarIconWidth = getValueOrVariableInt(this.options.toolBarIconWidth, this.menuContainer) || this.defaults.minItemSize, itemPadding = getValueOrVariableInt(this.options.itemPadding, this.menuContainer) || this.defaults.itemPadding, fontSize = getValueOrVariable(this.options.fontSize, this.menuContainer) || this.defaults.fontSize;
         // available width the menu has to expand to
         var availWidth = window.innerWidth - reservedWidth;
         // width needed by the menu
@@ -201,7 +201,7 @@ var AlphaHeader = /** @class */ (function () {
             minItemWidth: minItemSize
         });
         // width needed for toolbar icon view
-        var minWidthNeeded = this.toolBar.children.length * minItemSize;
+        var minWidthNeeded = this.toolBar.children.length * toolBarIconWidth;
         // new state to change into
         var newState;
         //console.info('available width: ' + availWidth + ', need for collapsed: ' + collapsedWidthNeeded + ', need for toolbar: ' + minWidthNeeded);

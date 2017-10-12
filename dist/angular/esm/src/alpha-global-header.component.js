@@ -12,6 +12,7 @@ var AlphaGlobalHeader = /** @class */ (function () {
         var header = new AlphaHeader(this.elRef.nativeElement, {
             // map config properties to css vars
             minItemSize: '@item-size',
+            toolBarIconWidth: '@toolbar-icon-width',
             itemPadding: '@item-padding',
             fontSize: '@item-font-size',
             reservedWidth: '@menu-reserved-width',

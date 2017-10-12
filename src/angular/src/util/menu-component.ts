@@ -298,6 +298,7 @@ class AlphaHeader {
 		// extract the supported values
 		var reservedWidth = getValueOrVariableInt( this.options.reservedWidth, this.menuContainer ) || this.defaults.reservedWidth,
 			minItemSize = getValueOrVariableInt( this.options.minItemSize, this.menuContainer ) || this.defaults.minItemSize,
+			toolBarIconWidth = getValueOrVariableInt( this.options.toolBarIconWidth, this.menuContainer ) || this.defaults.minItemSize,
 			itemPadding = getValueOrVariableInt( this.options.itemPadding, this.menuContainer ) || this.defaults.itemPadding,
 			fontSize = getValueOrVariable( this.options.fontSize, this.menuContainer ) || this.defaults.fontSize;
 
@@ -314,7 +315,7 @@ class AlphaHeader {
 			} );
 
 		// width needed for toolbar icon view
-		var minWidthNeeded = this.toolBar.children.length * minItemSize;
+		var minWidthNeeded = this.toolBar.children.length * toolBarIconWidth;
 
 		// new state to change into
 		var newState;

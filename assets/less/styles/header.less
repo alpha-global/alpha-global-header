@@ -25,7 +25,7 @@
 @itemPadding : 15px;
 @itemFontSize : 18px;
 @menuReservedWidth : 84px; // the logo is only required space
-@menuHeight : 84px;
+
 @collapsedHeight: 84px;
 @mobileHeight: 58px;
 
@@ -34,7 +34,7 @@
 */
 html{
 
-	--menu-height : @menuHeight;
+	--item-size : @itemSize;
 
 	&.nav-open {
 		overflow: hidden;
@@ -44,12 +44,18 @@ html{
 	}
 	&.nav-collapsed {
 
-		--menu-height : @collapsedHeight;
+		--item-size : @collapsedHeight;
+
+	}
+
+	&.nav-minified {
+
+		--item-size : @mobileHeight;
 
 	}
 
 	body {
-		padding-top: var(--menu-height);
+		padding-top: var(--item-size);
 	}
 }
 
@@ -58,10 +64,10 @@ html{
 */
 alpha-global-header {
 
-	--item-size : @itemSize;
 	--item-padding : @itemPadding;
 	--item-font-size : @itemFontSize;
 	--menu-reserved-width : @menuReservedWidth;
+	--toolbar-icon-width : @itemSize;
 
 	display:block;
 	position:fixed;
@@ -69,7 +75,7 @@ alpha-global-header {
 	top:0;
 	left:0px;
 	width:100%;
-	height: @menuHeight;
+	height: var(--item-size);
 	line-height:1;
 	font-family: "ITCAvantGardeStd", "Century Gothic", sans-serif;
 	color:#000;
@@ -271,7 +277,7 @@ alpha-global-header {
 
 		background-color:@bgDark;
 
-		&:hover{
+		html:not(.nav-minified) &:hover{
 			i, &::before, &::after{
 				background-color:@red;
 			}
@@ -430,7 +436,7 @@ alpha-global-header {
 	&.collapsed {
 
 		display: flex;
-		height:@collapsedHeight;
+		//height:@collapsedHeight;
 		justify-content: space-between;
 		background:#fff;
 		border-bottom:1px solid @borderColour;
@@ -460,7 +466,7 @@ alpha-global-header {
 			justify-content: flex-end;
 			position:relative;
 			> *:not(template) {
-				min-width: var(--menu-height);
+				min-width: var(--item-size);
 				height:100%;
 				display:flex;
 				flex-flow: column nowrap;
@@ -632,7 +638,25 @@ alpha-global-header {
 
 	}
 
+	/**
+	 Minified customizations
+	*/
 	&.minified {
+
+		border:none;
+
+		.menu-toggle {
+			background:transparent;
+			border:none !important;
+			> i, &::before, &::after {
+				margin:2px 0;
+			}
+		}
+
+		.question-mark {
+			font-size:30px;
+		}
+
 		.menu-toolbar {
 			> *:not( .menu-toggle ) {
 				display:none;

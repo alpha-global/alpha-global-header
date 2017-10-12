@@ -61,6 +61,7 @@ export class AlphaGlobalHeader implements AfterViewInit {
 
 			// map config properties to css vars
 			minItemSize : '@item-size',
+			toolBarIconWidth : '@toolbar-icon-width',
 			itemPadding : '@item-padding',
 			fontSize : '@item-font-size',
 			reservedWidth : '@menu-reserved-width',
