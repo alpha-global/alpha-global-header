@@ -1,13 +1,25 @@
 {
   "name": "alpha-global-header",
-  "version": "1.0.0",
+  "version": "1.0.1",
+  "author": "Relentless Technology",
+  "license": "ISC",
   "description": "Global Header for Alpha",
+  "private": true,
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/alpha-canada/alpha-global-header.git"
+  },
+  "publishConfig": {
+
+  },
   "main": "./dist/angular/umd/index.js",
   "module": "./dist/angular/umd/index.js",
   "files": [
     "dist/angular"
   ],
+
   "typings": "./dist/angular/esm/index.d.ts",
+
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "npm run polymer:start | npm run angular:start",
@@ -28,8 +40,7 @@
     "angular:lint": "ng lint",
     "angular:e2e": "ng e2e"
   },
-  "author": "",
-  "license": "ISC",
+
   "dependencies": {},
   "devDependencies": {
     "@types/jasmine": "~2.6.0",
