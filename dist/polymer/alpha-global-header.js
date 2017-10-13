@@ -166,7 +166,7 @@ var AlphaHeader = /** @class */ (function () {
             var liEl = this.menuContainer.children[i];
             var link = liEl.firstElementChild || liEl, text = link.textContent, needed;
             if (text) {
-                needed = measureWidth(text, font, { letterSpacing: letterSpacing, wordSpacing: wordSpacing });
+                needed = this.measureWidth(text, font, { letterSpacing: letterSpacing, wordSpacing: wordSpacing });
             }
             else {
                 needed = minItemWidth;
@@ -277,6 +277,47 @@ var AlphaHeader = /** @class */ (function () {
             subMenu.parentNode.insertBefore(toggle, subMenu);
         });
     };
+    /**
+     * Measure the width of text given a font def and custom properties
+     *
+     * @param {*} text
+     * @param {*} font
+     * @param {*} overwrites
+     */
+    AlphaHeader.prototype.measureWidth = function (text, font, overwrites) {
+        if (overwrites === void 0) { overwrites = {}; }
+        var letterSpacing = overwrites.letterSpacing || 0;
+        var wordSpacing = overwrites.wordSpacing || 0;
+        var addSpacing = addWordAndLetterSpacing(wordSpacing, letterSpacing);
+        var ctx = this.getContext2d(font);
+        return ctx.measureText(text).width + addSpacing(text);
+    };
+    /**
+     * Get canvas element to measure text with
+     *
+     * @param {*} font
+     */
+    AlphaHeader.prototype.getContext2d = function (font) {
+        if (this.canvasContext) {
+            return this.canvasContext;
+        }
+        try {
+            var ctx = document.createElement('canvas').getContext('2d');
+            var dpr = window.devicePixelRatio || 1;
+            var bsr = ctx.webkitBackingStorePixelRatio ||
+                ctx.mozBackingStorePixelRatio ||
+                ctx.msBackingStorePixelRatio ||
+                ctx.oBackingStorePixelRatio ||
+                ctx.backingStorePixelRatio || 1;
+            ctx.font = font;
+            ctx.setTransform(dpr / bsr, 0, 0, dpr / bsr, 0, 0);
+            this.canvasContext = ctx;
+            return ctx;
+        }
+        catch (err) {
+            throw new Error('Canvas support required');
+        }
+    };
     AlphaHeader.prototype.open = function () {
         this.element.classList.add('open');
         htmlClasses.add('nav-open');
@@ -328,7 +369,13 @@ var AlphaHeader = /** @class */ (function () {
                 htmlClasses.add('nav-collapsed');
                 this.element.classList.add('collapsed');
             }
-            if (newState === 'minified') {
+            if (newState === '') {
+                htmlClasses.remove('nav-minified');
+                htmlClasses.remove('nav-collapsed');
+                this.element.classList.remove('minified');
+                this.element.classList.remove('collapsed');
+            }
+            else if (newState === 'minified') {
                 htmlClasses.add('nav-minified');
                 this.element.classList.add('minified');
             }
@@ -398,40 +445,17 @@ function pxValue(val, options) {
     throw new Error("The unit " + unit + " is not supported");
 }
 /**
- * Get canvas element to measure text with
- *
- * @param {*} font
- */
-function getContext2d(font) {
-    try {
-        var ctx = document.createElement('canvas').getContext('2d');
-        var dpr = window.devicePixelRatio || 1;
-        var bsr = ctx.webkitBackingStorePixelRatio ||
-            ctx.mozBackingStorePixelRatio ||
-            ctx.msBackingStorePixelRatio ||
-            ctx.oBackingStorePixelRatio ||
-            ctx.backingStorePixelRatio || 1;
-        ctx.font = font;
-        ctx.setTransform(dpr / bsr, 0, 0, dpr / bsr, 0, 0);
-        return ctx;
-    }
-    catch (err) {
-        throw new Error('Canvas support required');
-    }
-}
-/**
  * Add custom letter and word spacing
  * @param {*} ws
  * @param {*} ls
  */
 function addWordAndLetterSpacing(ws, ls) {
-    var blacklist = ['inherit', 'initial', 'unset', 'normal'];
     var wordAddon = 0;
-    if (ws && blacklist.indexOf(ws) === -1) {
+    if (ws) {
         wordAddon = pxValue(ws);
     }
     var letterAddon = 0;
-    if (ls && blacklist.indexOf(ls) === -1) {
+    if (ls) {
         letterAddon = pxValue(ls);
     }
     return function (text) {
@@ -439,21 +463,6 @@ function addWordAndLetterSpacing(ws, ls) {
         var chars = text.length;
         return (words * wordAddon) + (chars * letterAddon);
     };
-}
-/**
- * Measure the width of text given a font def and custom properties
- *
- * @param {*} text
- * @param {*} font
- * @param {*} overwrites
- */
-function measureWidth(text, font, overwrites) {
-    if (overwrites === void 0) { overwrites = {}; }
-    var letterSpacing = overwrites.letterSpacing || 0;
-    var wordSpacing = overwrites.wordSpacing || 0;
-    var addSpacing = addWordAndLetterSpacing(wordSpacing, letterSpacing);
-    var ctx = getContext2d(font);
-    return ctx.measureText(text).width + addSpacing(text);
 }
 function getValueOrVariable(value, el) {
     if (value.indexOf('@') >= 0) {

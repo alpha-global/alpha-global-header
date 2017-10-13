@@ -11,6 +11,7 @@ declare class AlphaHeader {
     state: string;
     options: any;
     defaults: any;
+    private canvasContext;
     constructor(element: any, options: any);
     /**
      * Handle clicks on different elements
@@ -43,6 +44,20 @@ declare class AlphaHeader {
      * Attach sub menu toggles
      */
     private attachSubMenuToggles();
+    /**
+     * Measure the width of text given a font def and custom properties
+     *
+     * @param {*} text
+     * @param {*} font
+     * @param {*} overwrites
+     */
+    private measureWidth(text, font, overwrites?);
+    /**
+     * Get canvas element to measure text with
+     *
+     * @param {*} font
+     */
+    private getContext2d(font);
     open(): void;
     close(): void;
     openSearch(): void;

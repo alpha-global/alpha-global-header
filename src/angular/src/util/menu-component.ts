@@ -23,7 +23,9 @@ class AlphaHeader {
 			toolBarItemSelector : '[toolbar-item]',
 			languages : []
 
-	};
+		};
+
+		private canvasContext:CanvasRenderingContext2D;
 
 	constructor (
 		public element,
@@ -111,7 +113,7 @@ class AlphaHeader {
 				needed;
 
 			if ( text ) {
-				needed = measureWidth( text, font, { letterSpacing : letterSpacing, wordSpacing : wordSpacing } );
+				needed = this.measureWidth( text, font, { letterSpacing : letterSpacing, wordSpacing : wordSpacing } );
 			} else {
 				needed = minItemWidth;
 			}
@@ -271,6 +273,56 @@ class AlphaHeader {
 
 	}
 
+
+	/**
+	 * Measure the width of text given a font def and custom properties
+	 *
+	 * @param {*} text
+	 * @param {*} font
+	 * @param {*} overwrites
+	 */
+	private measureWidth( text, font, overwrites:any = {}  ): number {
+
+		var letterSpacing = overwrites.letterSpacing || 0;
+		var wordSpacing = overwrites.wordSpacing || 0;
+		var addSpacing = addWordAndLetterSpacing(wordSpacing, letterSpacing);
+
+		var ctx = this.getContext2d(font);
+
+		return ctx.measureText(text).width + addSpacing(text);
+	}
+
+	/**
+	 * Get canvas element to measure text with
+	 *
+	 * @param {*} font
+	 */
+	private getContext2d(font):CanvasRenderingContext2D {
+
+		if ( this.canvasContext ) {
+			return this.canvasContext;
+		}
+
+		try {
+			var ctx:any = document.createElement('canvas').getContext('2d');
+			var dpr = window.devicePixelRatio || 1;
+			var bsr = ctx.webkitBackingStorePixelRatio ||
+					ctx.mozBackingStorePixelRatio ||
+					ctx.msBackingStorePixelRatio ||
+					ctx.oBackingStorePixelRatio ||
+					ctx.backingStorePixelRatio || 1;
+			ctx.font = font;
+			ctx.setTransform(dpr / bsr, 0, 0, dpr / bsr, 0, 0);
+
+			this.canvasContext = ctx;
+
+			return ctx;
+		} catch (err) {
+			throw new Error('Canvas support required');
+		}
+	}
+
+
 	public open(): void {
 		this.element.classList.add( 'open' );
 		htmlClasses.add( 'nav-open' );
@@ -295,6 +347,7 @@ class AlphaHeader {
 	 * Resize function
 	 */
 	public check(): void {
+
 		// extract the supported values
 		var reservedWidth = getValueOrVariableInt( this.options.reservedWidth, this.menuContainer ) || this.defaults.reservedWidth,
 			minItemSize = getValueOrVariableInt( this.options.minItemSize, this.menuContainer ) || this.defaults.minItemSize,
@@ -349,7 +402,14 @@ class AlphaHeader {
 
 			}
 
-			if ( newState === 'minified' ) {
+			if ( newState === '' ) {
+
+				htmlClasses.remove( 'nav-minified' );
+				htmlClasses.remove( 'nav-collapsed' );
+				this.element.classList.remove( 'minified' );
+				this.element.classList.remove( 'collapsed' );
+
+			} else if ( newState === 'minified' ) {
 
 				htmlClasses.add( 'nav-minified' );
 				this.element.classList.add( 'minified' );
@@ -434,27 +494,6 @@ function pxValue(val, options = {}) {
 	throw new Error(`The unit ${unit} is not supported`);
 }
 
-/**
- * Get canvas element to measure text with
- *
- * @param {*} font
- */
-function getContext2d(font) {
-	try {
-		var ctx:any = document.createElement('canvas').getContext('2d');
-		var dpr = window.devicePixelRatio || 1;
-		var bsr = ctx.webkitBackingStorePixelRatio ||
-				ctx.mozBackingStorePixelRatio ||
-				ctx.msBackingStorePixelRatio ||
-				ctx.oBackingStorePixelRatio ||
-				ctx.backingStorePixelRatio || 1;
-		ctx.font = font;
-		ctx.setTransform(dpr / bsr, 0, 0, dpr / bsr, 0, 0);
-		return ctx;
-	} catch (err) {
-		throw new Error('Canvas support required');
-	}
-}
 
 /**
  * Add custom letter and word spacing
@@ -462,15 +501,14 @@ function getContext2d(font) {
  * @param {*} ls
  */
 function addWordAndLetterSpacing(ws, ls) {
-	var blacklist = ['inherit', 'initial', 'unset', 'normal'];
 
 	let wordAddon = 0;
-	if (ws && blacklist.indexOf(ws) === -1) {
+	if (ws) {
 		wordAddon = pxValue(ws);
 	}
 
 	let letterAddon = 0;
-	if (ls && blacklist.indexOf(ls) === -1) {
+	if (ls) {
 		letterAddon = pxValue(ls);
 	}
 
@@ -482,23 +520,7 @@ function addWordAndLetterSpacing(ws, ls) {
 	};
 }
 
-/**
- * Measure the width of text given a font def and custom properties
- *
- * @param {*} text
- * @param {*} font
- * @param {*} overwrites
- */
-function measureWidth( text, font, overwrites:any = {}  ) {
 
-	var letterSpacing = overwrites.letterSpacing || 0;
-	var wordSpacing = overwrites.wordSpacing || 0;
-	var addSpacing = addWordAndLetterSpacing(wordSpacing, letterSpacing);
-
-	var ctx = getContext2d(font);
-
-	return ctx.measureText(text).width + addSpacing(text);
-}
 
 function getValueOrVariable( value, el ) {
 
