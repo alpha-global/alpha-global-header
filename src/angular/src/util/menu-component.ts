@@ -8,9 +8,6 @@ const ITEM_PADDING = 15;
 const ITEM_FONT_SIZE = 18;
 const MENU_RESERVED_WIDTH = 84; // the logo is only required space
 
-const COLLAPSED_HEIGHT = 84;
-const MOBILE_HEIGHT = 58;
-
 /**
  * This class is used in polymer and angular to construct and manage the menu
  */
@@ -199,6 +196,10 @@ class AlphaHeader {
 	 * Create the language menu
 	 */
 	private createLanguageMenu(): void{
+
+		if ( this.options.languages.length === 0 ) {
+			return;
+		}
 
 		const languageElement:HTMLElement = document.createElement( 'div' );
 		languageElement.classList.add( 'menu-item-has-children' );

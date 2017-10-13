@@ -30,33 +30,32 @@
 
 	</template>
 
-	<script>'use strict';
+	<script>
 
-	Polymer({
-        is : 'alpha-global-header',
-			properties: {
-				title : String,
-				settings : Object,
-				home : String,
-				languages : Array,
-				search : Boolean,
-				searchAction : String
-			},
+		import { AlphaHeader } from '../angular/src/util/menu-component.ts';
 
-			ready : function(){
+		Polymer({
+			is : 'alpha-global-header',
+				properties: {
+					title : String,
+					settings : Object,
+					home : String,
+					languages : Array,
+					search : Boolean,
+					searchAction : String
+				},
 
-				// apply styles on demand
-				_aghRegisterStyles();
+				ready : function(){
 
-				// imported from menu-width.js
-				this.alphaHeader = new AlphaHeader( this, {
+					// imported from menu-width.js
+					this.alphaHeader = new AlphaHeader( this, {
 
-					search : this.search ? { action : this.searchAction } : false,
-					languages : this.languages
-				});
-			}
+						search : this.search ? { action : this.searchAction } : false,
+						languages : this.languages
+					});
+				}
 
-		});
+			});
 	</script>
 
 </dom-module>

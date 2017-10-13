@@ -45,25 +45,43 @@
 		.question-mark {
 
 			width: @size;
+			height: @size;
 			max-width:@size;
 			min-width:@size;
 		}
 		[menu-icon] {
 			max-width:@size;
 		}
+
+		.menu-search-area, .menu-search-input {
+			height:@size;
+		}
+
+		/**
+		 * Main Level full width elements, plus the toolbar items
+		*/
 		&:not(.collapsed) .main-menu > *, .menu-toolbar > * {
 			&.menu-item-has-children:hover > .sub-menu  {
 				top:@size;
 			}
+			&::after{
+				height:@size;
+			}
 		}
+
+		// search form
 		.menu-search-area form .search-form-close{
 			flex-basis : @size;
 		}
 		&:not(.collapsed) .main-menu > *:not(template) {
 			min-width: @size;
+			> a {
+				height:@size;
+			}
 		}
 		&.collapsed	.menu-toolbar > *:not(template) {
 			min-width: @size;
+			height: @size;
 		}
 	}
 }
@@ -110,6 +128,7 @@ alpha-global-header {
 	a {
 		text-decoration: none;
 		display:block;
+		color:inherit;
 		cursor: pointer;
 	}
 	ul, li {
@@ -135,11 +154,6 @@ alpha-global-header {
 		justify-content:center;
 
 		box-sizing:border-box;
-		height:100%;
-	}
-
-	.menu-wrapper{
-		height:100%;
 	}
 
 	li {
@@ -201,7 +215,6 @@ alpha-global-header {
 			z-index:32;
 			display:block;
 			width:100%;
-			height:100%;
 			border-left:1px solid @borderColour;
 			border-right:1px solid @borderColour;
 			//border-bottom:2px solid transparent;
@@ -214,9 +227,10 @@ alpha-global-header {
 			}
 
 		}
-		&.current-menu-item {
+		&.current-menu-item, &.current-menu-ancestor {
 			&::after{
 				border-bottom:2px solid @red;
+				top:-2px;
 			}
 			.current-menu-item a {
 				color:@red;
@@ -291,7 +305,6 @@ alpha-global-header {
 
 				padding-left: @itemPadding;
 				padding-right: @itemPadding;
-				height:100%;
 				box-sizing:border-box;
 
 				display:flex;
@@ -320,7 +333,7 @@ alpha-global-header {
 		}
 
 		i, &::before, &::after{
-			height:2px;
+			height:2px !important;
 			margin:4px 0;
 			display:block;
 			background-color:#000;
@@ -340,14 +353,13 @@ alpha-global-header {
 		z-index:300;
 		left:100%;
 		top:0;
-		height:100%;
+
 		width:100%;
 		background:#fff;
 		transform: translateX(0);
 		transition: transform 0.3s ease-out;
 
 		form {
-			height:100%;
 			display:flex;
 			flex-grow:1;
 		}
@@ -372,9 +384,8 @@ alpha-global-header {
 			font-size:20px;
 			color: @searchInputColour;
 			border:none;
-			border-bottom:1px solid @borderColour;
+			border-left:1px solid @borderColour;
 			background-color : @bgDark;
-			height: 100%;
 			width: 100%;
 			margin: 0;
 			padding: 20px 50px;
@@ -407,7 +418,6 @@ alpha-global-header {
 		.menu-container{
 			display:flex;
 			justify-content : space-between;
-			height:100%;
 
 		}
 
@@ -440,8 +450,6 @@ alpha-global-header {
 		.main-menu{
 
 			justify-content: flex-end;
-			height:100%;
-
 
 			/** Top level menu items **/
 			> *:not(template) {
@@ -499,7 +507,7 @@ alpha-global-header {
 			justify-content: flex-end;
 			position:relative;
 			> *:not(template) {
-				height:100%;
+
 				display:flex;
 				flex-flow: column nowrap;
 				justify-content: center;
