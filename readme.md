@@ -1,6 +1,6 @@
 # Alpha Global Header
 
-* Stable tag: 1.0.3
+* Stable tag: 1.0.4
 
 ### Overview
 

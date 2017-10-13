@@ -24,8 +24,11 @@ var AlphaHeader = /** @class */ (function () {
             this.state = '',
             this.menuContainer = this.element.querySelector('[menu-container]');
         this.options = merge(options || {}, this.defaults);
-        this.createLanguageMenu();
         this.attachToolbarElements();
+        if (this.options.languages.length) {
+            this.menuContainer.appendChild(this.createLanguageMenu());
+            this.toolBar.insertBefore(this.createLanguageMenu(), this.toolBar.firstChild);
+        }
         this.attachSubMenuToggles();
         if (this.options.search) {
             this.createSearchArea();
@@ -108,11 +111,7 @@ var AlphaHeader = /** @class */ (function () {
         var items = this.menuContainer.querySelectorAll(this.options.toolBarItemSelector);
         var i = 0, len = items.length;
         for (i; i < len; i++) {
-            var item = items[i], placeholder = item.cloneNode();
-            placeholder.innerHTML = item.innerHTML;
-            // insert placeholder
-            this.menuContainer.insertBefore(placeholder, item);
-            // move item to toolbar
+            var item = items[i];
             this.toolBar.insertBefore(item, this.toolBar.firstChild);
         }
     };
@@ -121,13 +120,12 @@ var AlphaHeader = /** @class */ (function () {
      */
     AlphaHeader.prototype.createLanguageMenu = function () {
         if (this.options.languages.length === 0) {
-            return;
+            return null;
         }
         var languageElement = document.createElement('div');
         languageElement.classList.add('menu-item-has-children');
         languageElement.setAttribute('menu-icon', 'w');
         languageElement.setAttribute('menu-title', 'Languages');
-        languageElement.setAttribute('toolbar-item', '');
         var subMenu = '<ul class="sub-menu">', i = 0, len = this.options.languages.length;
         for (i; i < len; i++) {
             var language = this.options.languages[i];
@@ -135,7 +133,7 @@ var AlphaHeader = /** @class */ (function () {
         }
         subMenu += '</ul>';
         languageElement.innerHTML = subMenu;
-        this.menuContainer.appendChild(languageElement);
+        return languageElement;
     };
     /**
      * Create an icon to open the search

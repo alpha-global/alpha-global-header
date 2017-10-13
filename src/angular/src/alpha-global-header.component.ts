@@ -8,7 +8,11 @@ import {
 
 } from '@angular/core';
 
-import { Router, NavigationStart } from '@angular/router';
+import {
+	Router,
+	NavigationStart,
+	NavigationEnd
+} from '@angular/router';
 
 import { AlphaHeader } from './util/menu-component';
 
@@ -50,27 +54,18 @@ export class AlphaGlobalHeader implements AfterViewInit {
 	@Input('languages') languages: Array< any >;
 
 	/**
-	 * Since toolbar items (the profile icon) are moved around the dom, the router link breaks
-	 * Let's listen for those router link requests and make them work
+	 * Close menu when clicking on self link
+	 *
 	 * @param event
 	 */
 	@HostListener('click', ['$event']) onClick( event ) {
 
-		const targ:HTMLElement = event.target;
+		const targ:HTMLElement = event.target,
+			  isRouterLink:boolean = targ.hasAttribute( 'href' );
 
-		if ( targ.hasAttribute( 'ng-reflect-router-link' ) && targ.hasAttribute( 'toolbar-item' ) ) {
-
-			// router link value
-			const link:string = targ.getAttribute( 'ng-reflect-router-link' );
-
-			// convert link to router instruction
-			const parts:Array<string> = link.split( ',' );//.map(path => '"'+path+'"');
-
-			// navigate
-			this.router.navigate( parts );
-
-			// selected class link value
-			targ.classList.add( targ.getAttribute( 'ng-reflect-router-link-active' ) );
+		if ( isRouterLink ) {
+			// close the nav (should close by itself but when clicking on own items no navigation occurs)
+			this.header.close();
 		}
 
 	}
@@ -86,26 +81,16 @@ export class AlphaGlobalHeader implements AfterViewInit {
 		 */
 		this.router.events.subscribe(event => {
 
+			if ( ! this.header ) {
+				return;
+			}
+
 			if ( event instanceof NavigationStart ) {
-
-				const selectedElements = this.elRef.nativeElement.querySelectorAll( '.current-menu-item' );
-
-				let i:number = 0,
-					len:number = selectedElements.length;
-
-				for ( i; i < len; i++ ) {
-					const el = selectedElements[ i ];
-
-					// assuming current-menu-item
-					// @todo make this dynamic
-					el.classList.remove( 'current-menu-item' );
-				}
 
 				// close any open nav
 				this.header.close();
 
 			}
-
 
 		})
 	}

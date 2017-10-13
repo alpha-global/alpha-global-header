@@ -6,7 +6,7 @@ import { Component } from '@angular/core';
   <alpha-global-header
       id="headerMenu"
       home="https://www.alphacanada.org/run"
-      [languages]='[]'
+      [languages]='[{"label":"English", "href":"#english"}, {"label":"Francais", "href":"#francais"}]'
       [search]="true"
       search-action="https://www.alphacanada.org"
   >
@@ -31,7 +31,11 @@ import { Component } from '@angular/core';
             <li class="menu-btn menu-item tablet">
                 <a  i18n="common.buttons|Create an Alpha@@buttonCreateAlpha">Create an Alpha</a>
             </li>
-            <div [routerLink]="['page1/foo', 'someother']" class="bg-darker" menu-icon="x" menu-title="My Profile" toolbar-item></div>
+             <li class="menu-item">
+                <div>My Profile</div>
+            </li>
+
+            <div [routerLink]="['page1/foo', 'someother']" class="bg-darker" menu-icon="x" toolbar-item></div>
 
   </alpha-global-header>
   `

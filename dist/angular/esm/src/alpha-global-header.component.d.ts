@@ -10,8 +10,8 @@ export declare class AlphaGlobalHeader implements AfterViewInit {
     searchAction: string;
     languages: Array<any>;
     /**
-     * Since toolbar items (the profile icon) are moved around the dom, the router link breaks
-     * Let's listen for those router link requests and make them work
+     * Close menu when clicking on self link
+     *
      * @param event
      */
     onClick(event: any): void;

@@ -46,9 +46,12 @@ class AlphaHeader {
 
 		this.options = merge( options || {}, this.defaults );
 
-		this.createLanguageMenu();
-
 		this.attachToolbarElements( );
+
+		if ( this.options.languages.length ) {
+			this.menuContainer.appendChild( this.createLanguageMenu() );
+			this.toolBar.insertBefore( this.createLanguageMenu(), this.toolBar.firstChild );
+		}
 
 		this.attachSubMenuToggles( );
 
@@ -177,15 +180,7 @@ class AlphaHeader {
 			len:number = items.length;
 
 		for ( i; i < len; i++ ) {
-			const item:Node = items[i],
-				  placeholder = item.cloneNode() as HTMLElement;
-
-			placeholder.innerHTML = (item as HTMLElement).innerHTML;
-
-			// insert placeholder
-			this.menuContainer.insertBefore( placeholder, item );
-
-			// move item to toolbar
+			const item:Node = items[i];
 			this.toolBar.insertBefore( item, this.toolBar.firstChild );
 
 		}
@@ -195,17 +190,16 @@ class AlphaHeader {
 	/**
 	 * Create the language menu
 	 */
-	private createLanguageMenu(): void{
+	private createLanguageMenu(): HTMLElement{
 
 		if ( this.options.languages.length === 0 ) {
-			return;
+			return null;
 		}
 
 		const languageElement:HTMLElement = document.createElement( 'div' );
 		languageElement.classList.add( 'menu-item-has-children' );
 		languageElement.setAttribute( 'menu-icon', 'w' );
 		languageElement.setAttribute( 'menu-title', 'Languages');
-		languageElement.setAttribute( 'toolbar-item', '' );
 
 		let subMenu:string = '<ul class="sub-menu">',
 			i:number = 0,
@@ -220,7 +214,7 @@ class AlphaHeader {
 
 		languageElement.innerHTML = subMenu;
 
-		this.menuContainer.appendChild( languageElement );
+		return languageElement;
 	}
 
 	/**

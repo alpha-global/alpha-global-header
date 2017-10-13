@@ -6,35 +6,30 @@ var AlphaGlobalHeader = /** @class */ (function () {
         var _this = this;
         this.elRef = elRef;
         this.router = router;
+        /**
+         * Listen to navigation events
+         * Toolbar items that get moved around lose their ability to have their classes added / removed by angular
+         */
         this.router.events.subscribe(function (event) {
+            if (!_this.header) {
+                return;
+            }
             if (event instanceof NavigationStart) {
-                var selectedElements = _this.elRef.nativeElement.querySelectorAll('.current-menu-item');
-                var i = 0, len = selectedElements.length;
-                for (i; i < len; i++) {
-                    var el = selectedElements[i];
-                    el.classList.remove('current-menu-item');
-                }
                 // close any open nav
                 _this.header.close();
             }
         });
     }
     /**
-     * Since toolbar items (the profile icon) are moved around the dom, the router link breaks
-     * Let's listen for those router link requests and make them work
+     * Close menu when clicking on self link
+     *
      * @param event
      */
     AlphaGlobalHeader.prototype.onClick = function (event) {
-        var targ = event.target;
-        if (targ.hasAttribute('ng-reflect-router-link') && targ.hasAttribute('toolbar-item')) {
-            // router link value
-            var link = targ.getAttribute('ng-reflect-router-link');
-            // convert link to router instruction
-            var parts = link.split(','); //.map(path => '"'+path+'"');
-            // navigate
-            this.router.navigate(parts);
-            // selected class link value
-            targ.classList.add(targ.getAttribute('ng-reflect-router-link-active'));
+        var targ = event.target, isRouterLink = targ.hasAttribute('href');
+        if (isRouterLink) {
+            // close the nav (should close by itself but when clicking on own items no navigation occurs)
+            this.header.close();
         }
     };
     /**
