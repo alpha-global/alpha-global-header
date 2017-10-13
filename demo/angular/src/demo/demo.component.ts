@@ -10,11 +10,11 @@ import { Component } from '@angular/core';
       [search]="true"
       search-action="https://www.alphacanada.org"
   >
-            <li  class="menu-item menu-item-has-children">
+            <li  class="menu-item menu-item-has-children current-menu-item">
                 <a i18n="common.resources|Preview Resources Label@@previewResourcesLabel">Dashboard</a>
 
                 <ul class="sub-menu">
-                    <li><a>Test</a></li>
+                    <li class="current-menu-item"><a>Test</a></li>
                     <li><a>Test 2</a></li>
 
                 </ul>

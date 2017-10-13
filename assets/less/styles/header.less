@@ -32,9 +32,43 @@
 /**
  * Style html element to pad based off the height of the nav
 */
-html{
 
-	--item-size : @itemSize;
+
+.set-size( @size ) {
+
+	body {
+		padding-top: @size
+	}
+
+	alpha-global-header {
+		height : @size;
+		.question-mark {
+
+			width: @size;
+			max-width:@size;
+			min-width:@size;
+		}
+		[menu-icon] {
+			max-width:@size;
+		}
+		&:not(.collapsed) .main-menu > *, .menu-toolbar > * {
+			&.menu-item-has-children:hover > .sub-menu  {
+				top:@size;
+			}
+		}
+		.menu-search-area form .search-form-close{
+			flex-basis : @size;
+		}
+		&:not(.collapsed) .main-menu > *:not(template) {
+			min-width: @size;
+		}
+		&.collapsed	.menu-toolbar > *:not(template) {
+			min-width: @size;
+		}
+	}
+}
+
+html{
 
 	&.nav-open {
 		overflow: hidden;
@@ -43,31 +77,25 @@ html{
 		}
 	}
 	&.nav-collapsed {
-
-		--item-size : @collapsedHeight;
+		// set collapsed size
+		.set-size( @collapsedHeight );
 
 	}
 
 	&.nav-minified {
-
-		--item-size : @mobileHeight;
+		// set minified size
+		.set-size( @mobileHeight );
 
 	}
 
-	body {
-		padding-top: var(--item-size);
-	}
 }
+
+.set-size( @itemSize );
 
 /**
 *	<alpha-global-header> styles
 */
 alpha-global-header {
-
-	--item-padding : @itemPadding;
-	--item-font-size : @itemFontSize;
-	--menu-reserved-width : @menuReservedWidth;
-	--toolbar-icon-width : @itemSize;
 
 	display:block;
 	position:fixed;
@@ -75,7 +103,6 @@ alpha-global-header {
 	top:0;
 	left:0px;
 	width:100%;
-	height: var(--item-size);
 	line-height:1;
 	font-family: "ITCAvantGardeStd", "Century Gothic", sans-serif;
 	color:#000;
@@ -109,10 +136,6 @@ alpha-global-header {
 
 		box-sizing:border-box;
 		height:100%;
-
-		width: var(--item-size);
-		max-width:var(--item-size);
-		min-width:var(--item-size);
 	}
 
 	.menu-wrapper{
@@ -131,7 +154,7 @@ alpha-global-header {
 	[menu-icon] {
 
 		cursor: pointer;
-		max-width:var(--item-size);
+
 		font-size:22px;
 
 		transition: color 0.2s ease-out;
@@ -173,12 +196,15 @@ alpha-global-header {
 			background:#fff;
 
 			position: absolute;
+			top:0;
+			left:0;
 			z-index:32;
 			display:block;
 			width:100%;
 			height:100%;
 			border-left:1px solid @borderColour;
 			border-right:1px solid @borderColour;
+			//border-bottom:2px solid transparent;
 
 		}
 
@@ -188,11 +214,22 @@ alpha-global-header {
 			}
 
 		}
+		&.current-menu-item {
+			&::after{
+				border-bottom:2px solid @red;
+			}
+			.current-menu-item a {
+				color:@red;
+			}
+		}
 
 		&.menu-item-has-children {
 
 			&:hover{
-				border-bottom:1px solid #fff;
+
+				&:not(.current-menu-item){
+					border-bottom:1px solid #fff;
+				}
 
 				> .sub-menu {
 					transform : translateY(0);
@@ -209,7 +246,6 @@ alpha-global-header {
 				position:absolute;
 				z-index:30;
 				left:0;
-				top:var(--item-size);
 
 				min-width:max-content;
 				width:100%;
@@ -238,7 +274,7 @@ alpha-global-header {
 		display:flex;
 		flex-flow: row nowrap;
 		margin:0;
-		font-size: var(--item-font-size);
+		font-size: @itemFontSize;
 
 		/** Top level list elements **/
 		> *:not(template) {
@@ -253,8 +289,8 @@ alpha-global-header {
 				position:relative;
 				z-index:35;
 
-				padding-left: var(--item-padding);
-				padding-right: var(--item-padding);
+				padding-left: @itemPadding;
+				padding-right: @itemPadding;
 				height:100%;
 				box-sizing:border-box;
 
@@ -325,7 +361,6 @@ alpha-global-header {
 			background-color:@red;
 			color:#fff;
 			font-size:30px;
-			flex-basis : var(--item-size);
 			display:flex;
 			justify-content: center;
 			align-items:center;
@@ -365,7 +400,7 @@ alpha-global-header {
 		.before-menu{
 			border-bottom:1px solid #dfdfdf;
 			flex-grow:1;
-			min-width : var(--menu-reserved-width);
+			min-width : @menuReservedWidth;
 			background:#fff;
 		}
 
@@ -417,7 +452,6 @@ alpha-global-header {
 				align-items:center;
 				justify-content: center;
 				flex: 1 0 auto;
-				min-width:var(--item-size);
 
 				&.bg-darker{
 					&::after{
@@ -436,7 +470,6 @@ alpha-global-header {
 	&.collapsed {
 
 		display: flex;
-		//height:@collapsedHeight;
 		justify-content: space-between;
 		background:#fff;
 		border-bottom:1px solid @borderColour;
@@ -466,14 +499,11 @@ alpha-global-header {
 			justify-content: flex-end;
 			position:relative;
 			> *:not(template) {
-				min-width: var(--item-size);
 				height:100%;
 				display:flex;
 				flex-flow: column nowrap;
 				justify-content: center;
 				align-items:center;
-				border-left:1px solid @borderColour;
-
 				position: relative;
 
 			}
@@ -490,13 +520,13 @@ alpha-global-header {
 			display:none;
 		}
 
-		.sub-menu-toggle {
+		.main-menu .sub-menu-toggle {
 			cursor:pointer;
-			position: absolute;
 			display:inline-flex;
 			justify-content: center;
 			align-items:center;
-			margin:13px 0 0 -5px;
+			margin:0 0 0 -12px;
+			vertical-align: middle;
 			height:auto;
 			padding:10px;
 			&::before{
@@ -508,11 +538,6 @@ alpha-global-header {
 				border-top: 6px solid #fff;
 			}
 
-		}
-
-		.menu-btn{
-
-			color:@red;
 		}
 
 		li {
@@ -585,6 +610,8 @@ alpha-global-header {
 					padding:8px 15px;
 				}
 
+				.sub-menu-toggle { margin-left:-8px;}
+
 			}
 
 
@@ -631,7 +658,7 @@ alpha-global-header {
 				border:none;
 				width:100%;
 				transform:none;
-				font-size: var(--item-font-size); // use the font size of the main nav items in expanded
+				font-size: @itemFontSize; // use the font size of the main nav items in expanded
 
 			}
 		}

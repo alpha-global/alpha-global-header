@@ -59,18 +59,10 @@ export class AlphaGlobalHeader implements AfterViewInit {
 		// use our common menu sizing lib
 		const header:AlphaHeader = new AlphaHeader( this.elRef.nativeElement, {
 
-			// map config properties to css vars
-			minItemSize : '@item-size',
-			toolBarIconWidth : '@toolbar-icon-width',
-			itemPadding : '@item-padding',
-			fontSize : '@item-font-size',
-			reservedWidth : '@menu-reserved-width',
 			search : this.search ? { action : this.searchAction } : false,
 			languages: this.languages
 
 		} );
-
-		header.check();
 
 	}
 

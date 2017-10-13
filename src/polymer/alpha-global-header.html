@@ -51,19 +51,10 @@
 				// imported from menu-width.js
 				this.alphaHeader = new AlphaHeader( this, {
 
-					// map config properties to css vars
-					minItemSize : "@item-size",
-					itemPadding : "@item-padding",
-					toolBarIconWidth : '@toolbar-icon-width',
-					fontSize : "@item-font-size",
-					reservedWidth : "@menu-reserved-width",
 					search : this.search ? { action : this.searchAction } : false,
 					languages : this.languages
 				});
-
-				requestAnimationFrame(() => this.alphaHeader.check() );
-
-			},
+			}
 
 		});
 	</script>

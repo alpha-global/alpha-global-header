@@ -10,16 +10,9 @@ var AlphaGlobalHeader = /** @class */ (function () {
     AlphaGlobalHeader.prototype.ngAfterViewInit = function () {
         // use our common menu sizing lib
         var header = new AlphaHeader(this.elRef.nativeElement, {
-            // map config properties to css vars
-            minItemSize: '@item-size',
-            toolBarIconWidth: '@toolbar-icon-width',
-            itemPadding: '@item-padding',
-            fontSize: '@item-font-size',
-            reservedWidth: '@menu-reserved-width',
             search: this.search ? { action: this.searchAction } : false,
             languages: this.languages
         });
-        header.check();
     };
     AlphaGlobalHeader.decorators = [
         { type: Component, args: [{

@@ -33,16 +33,18 @@ externals : [
         // polymer-webpack-loader, and hand the output to
         // babel-loader. This let's us transpile JS in our `<script>` elements.
         use: [
-          { loader: 'babel-loader' },
-          { loader: 'polymer-webpack-loader' }
+          { loader: 'babel-loader', options : { presets: ['es2015'] } },
+          { loader: 'polymer-webpack-loader', options : { processStyleLinks : true } }
         ]
       },
       {
         // If you see a file that ends in .js, just send it to the babel-loader.
         test: /\.js$/,
-        use: 'babel-loader'
+        use: [
+          { 'loader' : 'babel-loader', options : { presets: ['es2015'] } }
+        ],
         // Optionally exclude node_modules from transpilation except for polymer-webpack-loader:
-        // exclude: /node_modules\/(?!polymer-webpack-loader\/).*/
+        exclude: /node_modules\/(?!polymer-webpack-loader\/).*/
       },
 
 

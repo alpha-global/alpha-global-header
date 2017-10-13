@@ -2,6 +2,15 @@
 // reference to document element classes
 const htmlClasses = document.documentElement.classList;
 
+
+const ITEM_SIZE = 84;
+const ITEM_PADDING = 15;
+const ITEM_FONT_SIZE = 18;
+const MENU_RESERVED_WIDTH = 84; // the logo is only required space
+
+const COLLAPSED_HEIGHT = 84;
+const MOBILE_HEIGHT = 58;
+
 /**
  * This class is used in polymer and angular to construct and manage the menu
  */
@@ -49,6 +58,8 @@ class AlphaHeader {
 		if ( this.options.search ) {
 			this.createSearchArea( );
 		}
+
+		requestAnimationFrame( () => this.check( ) );
 
 		window.addEventListener( 'resize', () => this.check( ) );
 
@@ -263,13 +274,18 @@ class AlphaHeader {
 
 		const subMenus = this.element.querySelectorAll( '.sub-menu' );
 
-		subMenus.forEach( subMenu  => {
+		let i:number = 0,
+			len:number = subMenus.length;
+
+		for ( i; i < len; i++ ) {
+
+			let subMenu = subMenus[ i ];
 
 			const toggle:HTMLElement = document.createElement( 'span' );
 			toggle.classList.add( 'sub-menu-toggle' );
 
 			subMenu.parentNode.insertBefore( toggle, subMenu );
-		});
+		}
 
 	}
 
@@ -349,11 +365,11 @@ class AlphaHeader {
 	public check(): void {
 
 		// extract the supported values
-		var reservedWidth = getValueOrVariableInt( this.options.reservedWidth, this.menuContainer ) || this.defaults.reservedWidth,
-			minItemSize = getValueOrVariableInt( this.options.minItemSize, this.menuContainer ) || this.defaults.minItemSize,
-			toolBarIconWidth = getValueOrVariableInt( this.options.toolBarIconWidth, this.menuContainer ) || this.defaults.minItemSize,
-			itemPadding = getValueOrVariableInt( this.options.itemPadding, this.menuContainer ) || this.defaults.itemPadding,
-			fontSize = getValueOrVariable( this.options.fontSize, this.menuContainer ) || this.defaults.fontSize;
+		var reservedWidth = MENU_RESERVED_WIDTH,
+			minItemSize = ITEM_SIZE,
+			toolBarIconWidth = ITEM_SIZE,
+			itemPadding = ITEM_PADDING,
+			fontSize = ITEM_FONT_SIZE + "px"
 
 		// available width the menu has to expand to
 		var availWidth = window.innerWidth - reservedWidth;

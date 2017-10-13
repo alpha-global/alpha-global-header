@@ -5,9 +5,6 @@
 // import our shared header component
 import { AlphaHeader } from '../angular/src/util/menu-component.ts';
 
-// import the styles
-import * as styleText from '../../assets/less/styles/header.less';
-
 // assign our shared header class to the window
 window.AlphaHeader = AlphaHeader;
 
@@ -15,7 +12,8 @@ window._aghRegisterStyles = function() {
 
 	// create style element for the style text
 	var styleEl = document.createElement('style');
-	styleEl.innerHTML = styleText;
+	styleEl.innerHTML = require( '../../assets/less/styles/header.less' );
+	styleEl.id = "agh-styles";
 	document.head.appendChild(styleEl);
 
 }
