@@ -124,13 +124,10 @@ class AlphaHeader {
 				needed;
 
 			if ( text ) {
-				needed = this.measureWidth( text, font, { letterSpacing : letterSpacing, wordSpacing : wordSpacing } );
+				needed = this.measureWidth( text, font, { letterSpacing : letterSpacing, wordSpacing : wordSpacing } ) + itemPadding;
 			} else {
 				needed = minItemWidth;
 			}
-
-			// add item padding
-			needed += itemPadding;
 
 			//console.info(link.textContent, needed);
 
@@ -367,13 +364,13 @@ class AlphaHeader {
 			fontSize = ITEM_FONT_SIZE + "px"
 
 		// available width the menu has to expand to
-		var availWidth = window.innerWidth - reservedWidth;
+		var availWidth = document.body.clientWidth - reservedWidth;
 
 
 		// width needed by the menu
 		var collapsedWidthNeeded = this.getCollapsedMenuWidth( {
 				font : "600 " + fontSize + " Century Gothic",
-				letterSpacing : "0.02em",
+				letterSpacing : "0.05em",
 				itemPadding : itemPadding * 2,
 				minItemWidth : minItemSize
 			} );

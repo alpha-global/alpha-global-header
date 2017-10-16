@@ -1,6 +1,8 @@
 var webpack = require('webpack');
 var helpers = require('../common/helpers');
 
+var UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+
 var autoprefixer = require('autoprefixer');
 
 module.exports = {
@@ -76,10 +78,7 @@ externals : [
               plugins: [
                 autoprefixer({
                   browsers: [
-                    '> 1%',
-                    'last 4 versions',
-                    'last 20 Chrome versions',
-                    'last 20 Firefox versions'
+                    'last 2 versions'
                   ]
                 })
               ]
@@ -94,6 +93,11 @@ externals : [
     extensions: ['.html', '.js', '.ts']
   },
   plugins: [
+    new UglifyJSPlugin({
+      uglifyOptions: {
+        comments : false,
 
+      }
+    }),
   ]
 };

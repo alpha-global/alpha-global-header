@@ -1,6 +1,8 @@
 var webpack = require('webpack');
 var helpers = require('../common/helpers');
 
+var UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+
 var autoprefixer = require('autoprefixer');
 var angularExternals = require('webpack-angular-externals');
 var rxjsExternals = require('webpack-rxjs-externals');
@@ -18,16 +20,7 @@ module.exports = {
   externals: [
     angularExternals(),
     rxjsExternals(),
-    {
-    /*
-    'alpha-global-header': {
-      root: ['alphaGlobalHeader'],
-      commonjs: 'alpha-global-header',
-      commonjs2: 'alpha-global-header',
-      amd: 'alpha-global-header'
-    },*/
-
-  }],
+  ],
 
   module: {
     rules: [
@@ -58,7 +51,11 @@ module.exports = {
             loader: 'postcss-loader',
             options: {
               plugins: [
-                autoprefixer()
+                autoprefixer({
+                  browsers: [
+                    'last 2 versions'
+                  ]
+                })
               ]
             }
           },
@@ -71,6 +68,13 @@ module.exports = {
     extensions: ['.ts', '.js']
   },
   plugins: [
+
+    new UglifyJSPlugin({
+      uglifyOptions: {
+        comments : false,
+
+      }
+    }),
 
     new webpack.SourceMapDevToolPlugin({
       filename: 'index.js.map',
