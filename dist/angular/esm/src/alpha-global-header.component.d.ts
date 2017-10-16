@@ -1,7 +1,7 @@
-import { AfterViewInit, ElementRef } from '@angular/core';
+import { AfterViewInit, OnDestroy, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlphaHeader } from './util/menu-component';
-export declare class AlphaGlobalHeader implements AfterViewInit {
+export declare class AlphaGlobalHeader implements AfterViewInit, OnDestroy {
     private elRef;
     private router;
     header: AlphaHeader;
@@ -20,4 +20,8 @@ export declare class AlphaGlobalHeader implements AfterViewInit {
      * After view and content has been rendered, check the menu widths
      */
     ngAfterViewInit(): void;
+    /**
+     * Cleanup on destroy
+     */
+    ngOnDestroy(): void;
 }

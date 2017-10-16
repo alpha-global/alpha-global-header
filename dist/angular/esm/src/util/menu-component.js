@@ -34,8 +34,10 @@ var AlphaHeader = /** @class */ (function () {
             this.createSearchArea();
         }
         requestAnimationFrame(function () { return _this.check(); });
-        window.addEventListener('resize', function () { return _this.check(); });
-        this.element.addEventListener('click', function (event) { return _this.onClick(event); });
+        this._boundResizeFunction = this.check.bind(this);
+        this._boundClickFunction = this.onClick.bind(this);
+        window.addEventListener('resize', this._boundResizeFunction);
+        this.element.addEventListener('click', this._boundClickFunction);
     }
     /**
      * Handle clicks on different elements
@@ -231,6 +233,13 @@ var AlphaHeader = /** @class */ (function () {
     };
     AlphaHeader.prototype.closeSearch = function () {
         this.searchArea.classList.remove('open');
+    };
+    /**
+     * Remove listeners
+     */
+    AlphaHeader.prototype.destroy = function () {
+        window.removeEventListener('resize', this._boundResizeFunction);
+        this.element.removeEventListener('click', this._boundClickFunction);
     };
     /**
      * Resize function

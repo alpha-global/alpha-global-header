@@ -42,6 +42,12 @@ var AlphaGlobalHeader = /** @class */ (function () {
             languages: this.languages
         });
     };
+    /**
+     * Cleanup on destroy
+     */
+    AlphaGlobalHeader.prototype.ngOnDestroy = function () {
+        this.header.destroy();
+    };
     AlphaGlobalHeader.decorators = [
         { type: Component, args: [{
                     selector: 'alpha-global-header',

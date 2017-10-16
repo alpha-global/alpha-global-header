@@ -3,6 +3,7 @@ import {
 	Input,
 	ViewEncapsulation,
 	AfterViewInit,
+	OnDestroy,
 	ElementRef,
 	HostListener
 
@@ -44,7 +45,7 @@ import { AlphaHeader } from './util/menu-component';
 	styleUrls: ['../../../assets/less/styles/header.less'],
 	encapsulation : ViewEncapsulation.None
 })
-export class AlphaGlobalHeader implements AfterViewInit {
+export class AlphaGlobalHeader implements AfterViewInit, OnDestroy {
 
 	public header:AlphaHeader;
 
@@ -109,6 +110,14 @@ export class AlphaGlobalHeader implements AfterViewInit {
 
 		} );
 
+	}
+
+	/**
+	 * Cleanup on destroy
+	 */
+	public ngOnDestroy(): void {
+
+		this.header.destroy();
 	}
 
 }

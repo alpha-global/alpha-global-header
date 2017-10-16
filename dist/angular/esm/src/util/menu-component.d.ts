@@ -12,6 +12,8 @@ declare class AlphaHeader {
     options: any;
     defaults: any;
     private canvasContext;
+    private _boundResizeFunction;
+    private _boundClickFunction;
     constructor(element: any, options: any);
     /**
      * Handle clicks on different elements
@@ -62,6 +64,10 @@ declare class AlphaHeader {
     close(): void;
     openSearch(): void;
     closeSearch(): void;
+    /**
+     * Remove listeners
+     */
+    destroy(): void;
     /**
      * Resize function
      */

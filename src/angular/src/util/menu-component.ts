@@ -33,6 +33,9 @@ class AlphaHeader {
 
 		private canvasContext:CanvasRenderingContext2D;
 
+		private _boundResizeFunction:EventListenerOrEventListenerObject;
+		private _boundClickFunction:EventListenerOrEventListenerObject;
+
 	constructor (
 		public element,
 		options
@@ -61,9 +64,12 @@ class AlphaHeader {
 
 		requestAnimationFrame( () => this.check( ) );
 
-		window.addEventListener( 'resize', () => this.check( ) );
+		this._boundResizeFunction = this.check.bind( this );
+		this._boundClickFunction = this.onClick.bind( this );
 
-		this.element.addEventListener( 'click', event => this.onClick( event ) );
+		window.addEventListener( 'resize', this._boundResizeFunction );
+
+		this.element.addEventListener( 'click', this._boundClickFunction );
 
 	}
 
@@ -349,6 +355,16 @@ class AlphaHeader {
 
 		this.searchArea.classList.remove( 'open' );
 
+	}
+
+	/**
+	 * Remove listeners
+	 */
+	public destroy(): void {
+
+		window.removeEventListener( 'resize', this._boundResizeFunction );
+
+		this.element.removeEventListener( 'click', this._boundClickFunction );
 	}
 
 	/**
