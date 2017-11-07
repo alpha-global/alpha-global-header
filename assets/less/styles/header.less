@@ -1,31 +1,23 @@
 @import (inline) "../imports/fonts.min.css";
-
 @red: #e42312;
-
 @headerLinkColour : #000000;
 @headerLinkHoverColour : @red;
-
-@mobileMenuBackgroundColour :  #000;
+@mobileMenuBackgroundColour : #000;
 @mobileMenuLinkColour : #fff;
 @mobileMenuLinkHoverColour : @red;
-
 @searchInputColour : #5d6368;
-
 @borderColour : #dfdfdf;
 @bgDark : #f9f9f9;
-
 @onePXBiggerThanMobile : (@mobileMenuBreakWidth + 1);
-
 @mobileMenuBreakWidth : 768px;
 
 /**
  * These values help control the size of the menu and are used to calculate the available widths
 */
+
 @itemSize : 84px;
-@itemPadding : 15px;
 @itemFontSize : 18px;
 @menuReservedWidth : 84px; // the logo is only required space
-
 @collapsedHeight: 84px;
 @mobileHeight: 58px;
 
@@ -33,80 +25,89 @@
  * Style html element to pad based off the height of the nav
 */
 
-
 .set-size( @size ) {
-
-	body {
-		padding-top: @size
-	}
-
-	alpha-global-header {
-		box-sizing: initial;
-		height : @size;
-		.question-mark {
-
-			width: @size;
-			height: @size;
-			max-width:@size;
-			min-width:@size;
-		}
-		[menu-icon] {
-			max-width:@size;
-		}
-
-		.menu-search-area, .menu-search-input {
-			height:@size;
-		}
-
-		/**
+    body {
+        padding-top: @size
+    }
+    alpha-global-header {
+        box-sizing: initial;
+        height: @size;
+        .question-mark {
+            width: @size;
+            height: @size;
+            max-width: @size;
+            min-width: @size;
+        }
+        [menu-icon] {
+            max-width: @size;
+        }
+        .menu-search-area,
+        .menu-search-input {
+            height: @size;
+        }
+        /**
 		 * Main Level full width elements, plus the toolbar items
 		*/
-		&:not(.collapsed) .main-menu > *, .menu-toolbar > * {
-			&.menu-item-has-children:hover > .sub-menu  {
-				top:@size;
-			}
-			&::after{
-				height:@size;
-			}
-		}
-
-		// search form
-		.menu-search-area form .search-form-close{
-			flex-basis : @size;
-		}
-		&:not(.collapsed) .main-menu > *:not(template) {
-			min-width: @size;
-			> a {
-				height:@size;
-			}
-		}
-		&.collapsed	.menu-toolbar > *:not(template) {
-			min-width: @size;
-			height: @size;
-		}
-	}
+        &:not(.collapsed) .main-menu>* {
+            &.menu-item-has-children:hover {
+                >.sub-menu {
+                    top: @size;
+                }
+            }
+        }
+        .menu-toolbar>* {
+            &.menu-item-has-children.open {
+                >.sub-menu {
+                    top: @size;
+                }
+            }
+        }
+        &:not(.collapsed) .main-menu>*,
+        .menu-toolbar>* {
+            &::after {
+                height: @size;
+            }
+            &.menu-icon-width {
+                max-width: @size;
+            }
+        } // search form
+        .menu-search-area form .search-form-close {
+            flex-basis: @size;
+        }
+        &:not(.collapsed) .main-menu>*:not(template) {
+            min-width: @size;
+            >a {
+                height: @size;
+            }
+            &:last-child {
+                .sub-menu {
+                    right: -1px;
+                    left: unset;
+                }
+            }
+        }
+        &.collapsed .menu-toolbar>*:not(template) {
+            min-width: @size;
+            height: @size;
+        }
+    }
 }
 
-html{
-
-	&.nav-open {
-		overflow: hidden;
-		.menu-toolbar {
-			display:none !important;
-		}
-	}
-	&.nav-collapsed {
-		// set collapsed size
-		.set-size( @collapsedHeight );
-
-	}
-
-	&.nav-minified {
-		// set minified size
-		.set-size( @mobileHeight );
-
-	}
-
+html {
+    &.nav-open {
+        overflow: hidden;
+        .menu-toolbar {
+            display: none !important;
+        }
+    }
+    &.nav-collapsed {
+        // set collapsed size
+        .set-size( @collapsedHeight );
+    }
+    &.nav-minified {
+        // set minified size
+        .set-size( @mobileHeight );
+    }
 }
 
 .set-size( @itemSize );
@@ -114,592 +115,481 @@ html{
 /**
 *	<alpha-global-header> styles
 */
+
 alpha-global-header {
+    display: block;
+    position: fixed;
+    z-index: 250000;
+    top: 0;
+    left: 0px;
+    width: 100%;
+    line-height: 1;
+    font-family: "ITCAvantGardeStd", "Century Gothic", sans-serif;
+    color: #000;
+    a {
+        text-decoration: none;
+        display: block;
+        color: inherit;
+        cursor: pointer;
+    }
+    ul,
+    li {
+        padding: 0;
+        margin: 0;
+        list-style: none;
+        position: relative;
+    }
+    #closeButton {
+        display: none;
+    }
+    .question-mark {
+        cursor: pointer;
+        color: @red;
+        font-size: 45px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-sizing: border-box;
+    }
+    li {
+        a {
+            color: @headerLinkColour;
+            transition: all 0.3s ease-out;
+            transition-property: color, background-color;
+        }
+    }
+    [menu-icon] {
+        cursor: pointer;
+        font-size: 22px;
+        transition: color 0.2s ease-out;
+        &:hover::before {
+            color: @red;
+        }
+        &::before {
+            font-family: "AlphaIcons";
+            content: attr(menu-icon);
+            font-weight: normal;
+            position: relative;
+            z-index: 50;
+            transition: color 0.2s ease-out;
+        }
+    }
+    .no-cursor {
+        cursor: default;
+    } // search icon has to be a bit smaller, for some reason the glyph is too small
+    .search-icon {
+        font-size: 26px;
+    }
+    /**
+	 *	This selects the icons in the toolbar, and the main menu items when not collapsed
 
-	display:block;
-	position:fixed;
-	z-index:250000;
-	top:0;
-	left:0px;
-	width:100%;
-	line-height:1;
-	font-family: "ITCAvantGardeStd", "Century Gothic", sans-serif;
-	color:#000;
-
-	a {
-		text-decoration: none;
-		display:block;
-		color:inherit;
-		cursor: pointer;
-	}
-	ul, li {
-		padding:0;
-		margin:0;
-		list-style:none;
-		position:relative;
-	}
-
-	#closeButton {
-		display:none;
-	}
-
-	.question-mark {
-
-		cursor:pointer;
-
-		color: @red;
-		font-size:45px;
-
-		display:flex;
-		align-items:center;
-		justify-content:center;
-
-		box-sizing:border-box;
-	}
-
-	li {
-		a {
-
-			color:@headerLinkColour;
-			transition : all 0.3s ease-out;
-		}
-
-	}
-
-	[menu-icon] {
-
-		cursor: pointer;
-
-		font-size:22px;
-
-		transition: color 0.2s ease-out;
-
-		&:hover::before{
-			color: @red;
-		}
-
-		&::before {
-			font-family: "AlphaIcons";
-			content: attr(menu-icon);
-			font-weight:normal;
-			position: relative;
-			z-index:50;
-			transition:color 0.2s ease-out;
-		}
-
-	}
-
-	// search icon has to be a bit smaller, for some reason the glyph is too small
-	.search-icon{
-		font-size:26px;
-	}
-
-
-	/**
+	     Open the sub menu
+	*/
+    &:not(.collapsed) .main-menu .menu-item-has-children:hover,
+    .menu-toolbar .menu-item-has-children.open {
+        &:not(.current-menu-item) {
+            border-bottom: 1px solid #fff;
+        }
+        >.sub-menu {
+            transform: translateY(0);
+            height: auto;
+            border: 1px solid @borderColour;
+            border-top: none;
+        }
+    }
+    /**
 	 *	This selects the icons in the toolbar, and the main menu items when not collapsed
 	*/
-	&:not(.collapsed) .main-menu > *, .menu-toolbar > * {
-
-		&::before{
-			position: relative;
-			z-index:50;
-		}
-
-		&::after{
-
-			content:"";
-			background:#fff;
-
-			position: absolute;
-			top:0;
-			left:0;
-			z-index:32;
-			display:block;
-			width:100%;
-			border-left:1px solid @borderColour;
-			border-right:1px solid @borderColour;
-			//border-bottom:2px solid transparent;
-
-		}
-
-		&:not(.menu-btn):hover, .sub-menu li:hover {
-			> a {
-				color:@headerLinkHoverColour;
-			}
-
-		}
-		&.current-menu-item, &.current-menu-ancestor {
-			&::after{
-				border-bottom:2px solid @red;
-				top:-2px;
-			}
-			.current-menu-item a {
-				color:@red;
-			}
-		}
-
-		&.menu-item-has-children {
-
-			&:hover{
-
-				&:not(.current-menu-item){
-					border-bottom:1px solid #fff;
-				}
-
-				> .sub-menu {
-					transform : translateY(0);
-					height:auto;
-					border:1px solid @borderColour;
-					border-top:none;
-				}
-
-			}
-			.sub-menu {
-
-				overflow:hidden;
-
-				position:absolute;
-				z-index:30;
-				left:0;
-
-				min-width:max-content;
-				width:100%;
-				height:0;
-				padding:0;
-
-				background:#fff;
-
-				transform : translateY(-100%);
-				transition : transform 0.2s ease-out;
-
-				a{
-					padding:12px 20px;
-					&:hover{
-						background:@bgDark;
-					}
-				}
-
-			}
-		}
-
-	}
-
-	.main-menu{
-
-		display:flex;
-		flex-flow: row nowrap;
-		margin:0;
-		font-size: @itemFontSize;
-
-		/** Top level list elements **/
-		> *:not(template) {
-
-			font-weight:600;
-			letter-spacing:.36px;
-			position:relative;
-
-			/** link inside top level element **/
-			> a{
-
-				position:relative;
-				z-index:35;
-
-				padding-left: @itemPadding;
-				padding-right: @itemPadding;
-				box-sizing:border-box;
-
-				display:flex;
-				align-items:center;
-				flex-flow : row wrap;
-			}
-
-		}
-	}
-
-	.sub-menu {
-
-		font-size:16px;
-		font-weight:200;
-	}
-
-
-	.menu-toggle{
-
-		background-color:@bgDark;
-
-		html:not(.nav-minified) &:hover{
-			i, &::before, &::after{
-				background-color:@red;
-			}
-		}
-
-		i, &::before, &::after{
-			height:2px !important;
-			margin:4px 0;
-			display:block;
-			background-color:#000;
-			position: static;
-			width:33%;
-			transition: background-color 0.2s ease-out;
-		}
-		&::before, &::after{
-			content:"";
-		}
-	}
-
-	/** Slide out search component */
-	.menu-search-area{
-
-		position:absolute;
-		z-index:300;
-		left:100%;
-		top:0;
-
-		width:100%;
-		background:#fff;
-		transform: translateX(0);
-		transition: transform 0.3s ease-out;
-
-		form {
-			display:flex;
-			flex-grow:1;
-		}
-
-		&.open{
-			transform: translateX(-100%);
-		}
-
-		.search-form-close{
-			cursor:pointer;
-			background-color:@red;
-			color:#fff;
-			font-size:30px;
-			display:flex;
-			justify-content: center;
-			align-items:center;
-		}
-		.menu-search-input-wrapper{
-			flex-grow:1;
-		}
-		.menu-search-input{
-			font-size:20px;
-			color: @searchInputColour;
-			border:none;
-			border-left:1px solid @borderColour;
-			background-color : @bgDark;
-			width: 100%;
-			margin: 0;
-			padding: 20px 50px;
-			box-sizing: border-box;
-			&:focus{
-				outline:none;
-			}
-		}
-
-	}
-
-	/**
+    &:not(.collapsed) .main-menu>*,
+    .menu-toolbar>* {
+        &::before {
+            position: relative;
+            z-index: 50;
+        }
+        &::after {
+            content: "";
+            background: #fff;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 32;
+            display: block;
+            width: 100%;
+            border-left: 1px solid @borderColour;
+            border-right: 1px solid @borderColour;
+        }
+        &:not(.menu-btn):hover,
+        .sub-menu li:hover {
+            >a {
+                color: @headerLinkHoverColour;
+            }
+        }
+        &.current-menu-item,
+        &.current-menu-ancestor {
+            &::after {
+                border-bottom: 2px solid @red;
+                top: -2px;
+            }
+            .current-menu-item a {
+                color: @red;
+            }
+        }
+        &.menu-item-has-children {
+            .sub-menu {
+                overflow: hidden;
+                position: absolute;
+                z-index: 30;
+                left: 0;
+                min-width: max-content;
+                width: 100%;
+                height: 0;
+                padding: 0;
+                background: #fff;
+                transform: translateY(-100%);
+                transition: transform 0.2s ease-out;
+                a {
+                    padding: 12px 20px;
+                    &:hover {
+                        background: @bgDark;
+                    }
+                }
+            }
+        }
+    }
+    .main-menu {
+        display: flex;
+        flex-flow: row nowrap;
+        margin: 0;
+        font-size: @itemFontSize;
+        /** Top level list elements **/
+        >*:not(template) {
+            font-weight: 600;
+            letter-spacing: .36px;
+            position: relative;
+            /** link inside top level element **/
+            >a {
+                position: relative;
+                z-index: 35;
+                box-sizing: border-box;
+                display: flex;
+                align-items: center;
+                flex-flow: row wrap;
+            }
+        }
+    }
+    .sub-menu {
+        font-size: 16px;
+        font-weight: 200;
+    }
+    .menu-toggle {
+        background-color: @bgDark;
+        border-left: 1px solid @borderColour;
+        z-index: 50;
+        html:not(.nav-minified) &:hover {
+            i,
+            &::before,
+            &::after {
+                background-color: @red;
+            }
+        }
+        i,
+        &::before,
+        &::after {
+            height: 2px !important;
+            margin: 4px 0;
+            display: block;
+            background-color: #000;
+            position: static;
+            width: 33%;
+            transition: background-color 0.2s ease-out;
+        }
+        &::before,
+        &::after {
+            content: "";
+        }
+    }
+    /** Slide out search component */
+    .menu-search-area {
+        position: absolute;
+        z-index: 300;
+        left: 100%;
+        top: 0;
+        width: 100%;
+        background: #fff;
+        transform: translateX(0);
+        transition: transform 0.3s ease-out;
+        form {
+            display: flex;
+            flex-grow: 1;
+        }
+        &.open {
+            transform: translateX(-100%);
+        }
+        .search-form-close {
+            cursor: pointer;
+            background-color: @red;
+            color: #fff;
+            font-size: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .menu-search-input-wrapper {
+            flex-grow: 1;
+        }
+        .menu-search-input {
+            font-size: 20px;
+            color: @searchInputColour;
+            border: none;
+            border-left: 1px solid @borderColour;
+            background-color: @bgDark;
+            width: 100%;
+            margin: 0;
+            padding: 20px 50px;
+            box-sizing: border-box;
+            &:focus {
+                outline: none;
+            }
+        }
+    }
+    /**
 	 * Specifically for full widths
 	*/
-	&:not(.collapsed) {
-
-		.menu-toolbar{
-			display:none;
-		}
-		#mobileLogo{
-			display: none;
-		}
-		.before-menu{
-			border-bottom:1px solid #dfdfdf;
-			flex-grow:2;
-			min-width : @menuReservedWidth;
-			background:#fff;
-		}
-
-		.menu-container{
-			display:flex;
-			justify-content : space-between;
-
-		}
-
-		.menu-btn{
-
-			background-color:@red;
-			transition : background-color 150ms ease-in-out;
-
-			&:after{
-				content : none !important;
-			}
-
-			&:hover{
-				background-color:#b51c0e;
-			}
-
-			a{
-				color:white;
-				line-height: 1.8;
-			}
-
-		}
-
-
-
-		.menu-area {
-			flex : 1 1 auto;
-			position: relative;
-		}
-		.main-menu{
-
-			justify-content: flex-end;
-
-			/** Top level menu items **/
-			> *:not(template) {
-
-				border-bottom:1px solid @borderColour;
-
-				display:flex;
-				align-items:center;
-				justify-content: center;
-				flex: 1 0 auto;
-
-				&.bg-darker{
-					&::after{
-						background-color:@bgDark;
-					}
-				}
-
-			}
-		}
-	}
-
-
-	/**
+    &:not(.collapsed) {
+        .menu-toolbar {
+            display: none;
+        }
+        #mobileLogo {
+            display: none;
+        }
+        .before-menu {
+            border-bottom: 1px solid #dfdfdf;
+            flex-grow: 1;
+            min-width: @menuReservedWidth;
+            background: #fff;
+        }
+        .menu-container {
+            display: flex;
+            justify-content: space-between;
+        }
+        .menu-btn {
+            &::after {
+                background-color: @red;
+                transition: background-color 150ms ease-in-out;
+            }
+            &:hover {
+                &::after {
+                    background-color: #b51c0e;
+                }
+            }
+            a {
+                color: white;
+                line-height: 1.8;
+            }
+        }
+        .menu-area {
+            // keeps the search bar from expanding to full width
+            position: relative;
+        }
+        .main-menu {
+            justify-content: flex-end;
+            /** Top level menu items **/
+            >*:not(template) {
+                border-bottom: 1px solid @borderColour;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex: 1 0 auto;
+                &.bg-darker {
+                    &::after {
+                        background-color: @bgDark;
+                    }
+                }
+                >a {
+                    width: 100%;
+                    justify-content: center;
+                }
+            }
+        }
+    }
+    /**
 	 Collapsed Icon Nav
 	**/
-	&.collapsed {
-
-		display: flex;
-		justify-content: space-between;
-		background:#fff;
-		border-bottom:1px solid @borderColour;
-
-		&.open {
-
-			.main-menu {
-				display: flex;
-			}
-			#closeButton {
-				display:block;
-				position:absolute;
-				right:0;
-				z-index:100;
-				font-size:26px;
-				padding:15px;
-				line-height:80%;
-				cursor:pointer;
-				color:#fff;
-			}
-		}
-
-		.menu-toolbar{
-			display: flex;
-			flex-flow: row nowrap;
-			flex-grow: 1;
-			justify-content: flex-end;
-			position:relative;
-			> *:not(template) {
-
-				display:flex;
-				flex-flow: column nowrap;
-				justify-content: center;
-				align-items:center;
-				position: relative;
-
-			}
-		}
-
-		.menu-search-area{
-
-			.menu-search-input{
-				border:none;
-			}
-		}
-
-		.before-menu{
-			display:none;
-		}
-
-		.main-menu .sub-menu-toggle {
-			cursor:pointer;
-			display:inline-flex;
-			justify-content: center;
-			align-items:center;
-			margin:0 0 0 -12px;
-			vertical-align: middle;
-			height:auto;
-			padding:10px;
-			&::before{
-				content : "";
-				position: absolute;
-				border-bottom: none;
-				border-left: 6px solid transparent;
-				border-right: 6px solid transparent;
-				border-top: 6px solid #fff;
-			}
-
-		}
-
-		li {
-
-			border:none;
-			display:block;
-
-			a {
-
-				background:none;
-				height:auto;
-				color:inherit;
-
-			}
-
-		}
-
-
-		.menu-container{
-
-			li {
-				a {
-					border:none;
-
-				}
-			}
-
-		}
-
-		.main-menu {
-
-			position: fixed;
-			top: 0;
-			left: 0;
-			z-index:50;
-
-			width:100%;
-			height:100%;
-			overflow-y:auto;
-
-			display:none;
-			flex-flow: column nowrap;
-			justify-content: center;
-
-			background:#000;
-			color:#fff;
-			text-align:center;
-
-			a {
-				padding-top:8px;
-				padding-bottom:8px;
-				color:inherit;
-			}
-
-			[menu-icon] {
-
-				max-width:none;
-
-				&:hover::before {
-					color:inherit;
-				}
-
-				&::before{
-					font-family: inherit;
-					font-weight:inherit;
-					content : attr(menu-title);
-					display:inline-block;
-				}
-				&:not(a)::before{
-					padding:8px 15px;
-				}
-
-				.sub-menu-toggle { margin-left:-8px;}
-
-			}
-
-
-			/** Top level elements */
-			> *:not(template) {
-
-				margin-bottom:10px;
-				width:100%;
-				flex:initial;
-				font-size:24px;
-
-				/** link inside top level elements **/
-				> a{
-					display:inline-block;
-					font-size:inherit;
-					flex-grow:0;
-					height:auto;
-				}
-
-				&.open {
-					> .sub-menu{
-						display:block;
-					}
-					.sub-menu-toggle {
-						&::before{
-
-							border-top: none;
-							border-left: 6px solid transparent;
-							border-right: 6px solid transparent;
-							border-bottom: 6px solid #fff;
-						}
-					}
-				}
-
-			}
-
-			// submenus within the main menu become blocks again
-			.sub-menu{
-				margin:20px 0;
-				position:static;
-				visibility: visible;
-				display:none;
-				background:none;
-				border:none;
-				width:100%;
-				transform:none;
-				font-size: @itemFontSize; // use the font size of the main nav items in expanded
-
-			}
-		}
-
-	}
-
-	/**
+    &.collapsed {
+        display: flex;
+        justify-content: space-between;
+        background: #fff;
+        border-bottom: 1px solid @borderColour;
+        &.open {
+            .main-menu {
+                display: flex;
+            }
+            #closeButton {
+                display: block;
+                position: absolute;
+                right: 0;
+                z-index: 100;
+                font-size: 26px;
+                padding: 15px;
+                line-height: 80%;
+                cursor: pointer;
+                color: #fff;
+            }
+        }
+        .menu-toolbar {
+            display: flex;
+            flex-flow: row nowrap;
+            flex-grow: 1;
+            justify-content: flex-end;
+            position: relative;
+            >*:not(template) {
+                display: flex;
+                flex-flow: column nowrap;
+                justify-content: center;
+                align-items: center;
+                position: relative;
+            }
+        }
+        .menu-search-area {
+            .menu-search-input {
+                border: none;
+            }
+        }
+        .before-menu {
+            display: none;
+        }
+        .main-menu .sub-menu-toggle {
+            cursor: pointer;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 0 0 -12px;
+            vertical-align: middle;
+            height: auto;
+            padding: 10px;
+            &::before {
+                content: "";
+                position: absolute;
+                border-bottom: none;
+                border-left: 6px solid transparent;
+                border-right: 6px solid transparent;
+                border-top: 6px solid #fff;
+            }
+        }
+        li {
+            border: none;
+            display: block;
+            a {
+                background: none;
+                height: auto;
+                color: inherit;
+            }
+        }
+        .menu-container {
+            li {
+                a {
+                    border: none;
+                }
+            }
+        }
+        .main-menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 50;
+            width: 100%;
+            height: 100%;
+            overflow-y: auto;
+            display: none;
+            flex-flow: column nowrap;
+            justify-content: center;
+            background: #000;
+            color: #fff;
+            text-align: center;
+            a {
+                padding-top: 8px;
+                padding-bottom: 8px;
+                color: inherit;
+            }
+            [menu-icon] {
+                max-width: none;
+                &:hover::before {
+                    color: inherit;
+                }
+                &::before {
+                    font-family: inherit;
+                    font-weight: inherit;
+                    content: attr(menu-title);
+                    display: inline-block;
+                }
+                &:not(a)::before {
+                    padding: 8px 15px;
+                }
+                .sub-menu-toggle {
+                    margin-left: -8px;
+                }
+            }
+            /** Top level elements */
+            >*:not(template) {
+                margin-bottom: 10px;
+                width: 100%;
+                flex: initial;
+                font-size: 24px;
+                /** link inside top level elements **/
+                >a {
+                    display: inline-block;
+                    font-size: inherit;
+                    flex-grow: 0;
+                    height: auto;
+                }
+                &.open {
+                    >.sub-menu {
+                        display: block;
+                    }
+                    .sub-menu-toggle {
+                        &::before {
+                            border-top: none;
+                            border-left: 6px solid transparent;
+                            border-right: 6px solid transparent;
+                            border-bottom: 6px solid #fff;
+                        }
+                    }
+                }
+            } // submenus within the main menu become blocks again
+            .sub-menu {
+                margin: 20px 0;
+                position: static;
+                visibility: visible;
+                display: none;
+                background: none;
+                border: none;
+                width: 100%;
+                transform: none;
+                font-size: @itemFontSize; // use the font size of the main nav items in expanded
+            }
+        }
+    }
+    /**
 	 Minified customizations
 	*/
-	&.minified {
-
-		border:none;
-
-		.menu-toggle {
-			background:transparent;
-			border:none !important;
-			> i, &::before, &::after {
-				margin:2px 0;
-			}
-		}
-
-		.question-mark {
-			font-size:30px;
-		}
-
-		.menu-toolbar {
-			> *:not( .menu-toggle ) {
-				display:none;
-
-			}
-		}
-
-	}
-
+    &.minified {
+        border: none;
+        .menu-toggle {
+            background: transparent;
+            border: none !important;
+            >i,
+            &::before,
+            &::after {
+                margin: 2px 0;
+            }
+        }
+        .question-mark {
+            font-size: 30px;
+        }
+        .menu-toolbar {
+            >*:not( .menu-toggle) {
+                display: none;
+            }
+        }
+    }
 }

@@ -21,6 +21,11 @@ export declare class AlphaGlobalHeader implements AfterViewInit, OnDestroy {
      */
     ngAfterViewInit(): void;
     /**
+     * on click of the home link either use the router, or allow to open in new tab
+     * @param event
+     */
+    onHomeClick(event: MouseEvent): void;
+    /**
      * Cleanup on destroy
      */
     ngOnDestroy(): void;

@@ -1,6 +1,6 @@
 # Alpha Global Header
 
-* Stable tag: 1.0.6
+* Stable tag: 1.0.7
 
 ### Overview
 
@@ -37,3 +37,9 @@ To build all at once:
 ```node
 npm run build
 ```
+
+# Changelog
+
+### 1.0.7
+- Added click to open on toolbar sub-menus
+- Last child dropdown menu align right

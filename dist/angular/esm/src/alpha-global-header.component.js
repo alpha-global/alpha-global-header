@@ -6,6 +6,7 @@ var AlphaGlobalHeader = /** @class */ (function () {
         var _this = this;
         this.elRef = elRef;
         this.router = router;
+        this.languages = [];
         /**
          * Listen to navigation events
          * Toolbar items that get moved around lose their ability to have their classes added / removed by angular
@@ -39,8 +40,23 @@ var AlphaGlobalHeader = /** @class */ (function () {
         // use our common menu sizing lib
         this.header = new AlphaHeader(this.elRef.nativeElement, {
             search: this.search ? { action: this.searchAction } : false,
-            languages: this.languages
+            languages: this.languages,
+            closeSubMenusOnClick: true
         });
+    };
+    /**
+     * on click of the home link either use the router, or allow to open in new tab
+     * @param event
+     */
+    AlphaGlobalHeader.prototype.onHomeClick = function (event) {
+        if (this.home instanceof Array) {
+            event.preventDefault();
+            this.router.navigate(this.home);
+        }
+        else {
+            var link = event.target;
+            link.setAttribute('href', this.home);
+        }
     };
     /**
      * Cleanup on destroy
@@ -51,7 +67,7 @@ var AlphaGlobalHeader = /** @class */ (function () {
     AlphaGlobalHeader.decorators = [
         { type: Component, args: [{
                     selector: 'alpha-global-header',
-                    template: "\n\t<a *ngIf=\"home\" class=\"question-mark agh-icon-logo\" id=\"mobileLogo\" [routerLink]=\"home\"></a>\n\n\t<div class=\"menu-container\">\n\n\t\t<div *ngIf=\"home\" class=\"before-menu\">\n\t\t\t<a class=\"question-mark agh-icon-logo\" [routerLink]=\"home\"></a>\n\t\t</div>\n\n\t\t<div class=\"menu-area\">\n\n\t\t\t<ul menu-container class=\"main-menu\">\n\n\t\t\t\t<ng-content></ng-content>\n\n\t\t\t</ul>\n\n\t\t</div>\n\n\t</div>\n\n  \t",
+                    template: "\n\t<a *ngIf=\"home\" class=\"question-mark agh-icon-logo\" id=\"mobileLogo\" (click)=\"onHomeClick($event)\" target=\"_blank\"></a>\n\n\t<div class=\"menu-container\">\n\n\t\t<div *ngIf=\"home\" class=\"before-menu\">\n\t\t\t<a class=\"question-mark agh-icon-logo\" (click)=\"onHomeClick($event)\" target=\"_blank\"></a>\n\t\t</div>\n\n\t\t<div class=\"menu-area\">\n\n\t\t\t<ul menu-container class=\"main-menu\">\n\n\t\t\t\t<ng-content></ng-content>\n\n\t\t\t</ul>\n\n\t\t</div>\n\n\t</div>\n\n  \t",
                     styleUrls: ['../../../assets/less/styles/header.less'],
                     encapsulation: ViewEncapsulation.None
                 },] },
