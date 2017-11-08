@@ -4,7 +4,7 @@ const htmlClasses = document.documentElement.classList;
 
 
 const ITEM_SIZE = 84;
-const ITEM_MAX_PADDING = 40;
+const ITEM_MAX_PADDING = 50;
 const ITEM_MIN_PADDING = 15;
 const ITEM_FONT_SIZE = 18;
 const MENU_RESERVED_WIDTH = 84; // the logo is only required space

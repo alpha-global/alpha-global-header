@@ -5,7 +5,7 @@
 } else {
 
 	// polyfill for webcomponents
-	require( '../../bower_components/webcomponentsjs/webcomponents-lite.min.js' )
+	require( '../../bower_components/webcomponentsjs/webcomponents-lite.js' )
 
 }
 

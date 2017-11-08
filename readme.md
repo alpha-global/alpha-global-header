@@ -1,6 +1,6 @@
 # Alpha Global Header
 
-* Stable tag: 1.0.7
+* Stable tag: 1.0.8
 
 ### Overview
 
@@ -39,6 +39,9 @@ npm run build
 ```
 
 # Changelog
+
+### 1.0.8
+- Resized padding on menu items
 
 ### 1.0.7
 - Added click to open on toolbar sub-menus

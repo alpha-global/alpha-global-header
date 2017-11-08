@@ -1,7 +1,7 @@
 // reference to document element classes
 var htmlClasses = document.documentElement.classList;
 var ITEM_SIZE = 84;
-var ITEM_MAX_PADDING = 40;
+var ITEM_MAX_PADDING = 50;
 var ITEM_MIN_PADDING = 15;
 var ITEM_FONT_SIZE = 18;
 var MENU_RESERVED_WIDTH = 84; // the logo is only required space
