@@ -21,12 +21,12 @@ import { AlphaHeader } from './util/menu-component';
 @Component( {
 	selector: 'alpha-global-header',
 	template: `
-	<a *ngIf="home" class="question-mark agh-icon-logo" id="mobileLogo" (click)="onHomeClick($event)" target="_blank"></a>
+	<a *ngIf="home" class="question-mark agh-icon-logo" id="mobileLogo" (click)="onHomeClick($event)" [target]="homeTarget"></a>
 
 	<div class="menu-container">
 
 		<div *ngIf="home" class="before-menu">
-			<a class="question-mark agh-icon-logo" (click)="onHomeClick($event)" target="_blank"></a>
+			<a class="question-mark agh-icon-logo" (click)="onHomeClick($event)" [target]="homeTarget"></a>
 		</div>
 
 		<div class="menu-area">
@@ -50,6 +50,7 @@ export class AlphaGlobalHeader implements AfterViewInit, OnDestroy {
 	public header: AlphaHeader;
 
 	@Input( 'home' ) home: Array<string>;
+	@Input( 'homeTarget' ) homeTarget: string = '_self';
 	@Input( 'search' ) search: boolean;
 	@Input( 'search-action' ) searchAction: string;
 	@Input( 'languages' ) languages: Array<any> = [];
@@ -59,7 +60,7 @@ export class AlphaGlobalHeader implements AfterViewInit, OnDestroy {
 	 *
 	 * @param event
 	 */
-	@HostListener( 'click', [ '$event' ] ) onClick ( event ) {
+	@HostListener( 'click', [ '$event' ] ) onClick( event ) {
 
 		const targ: HTMLElement = event.target,
 			isRouterLink: boolean = targ.hasAttribute( 'href' );
@@ -71,7 +72,7 @@ export class AlphaGlobalHeader implements AfterViewInit, OnDestroy {
 
 	}
 
-	public constructor (
+	public constructor(
 		private elRef: ElementRef,
 		private router: Router
 	) {
@@ -100,7 +101,7 @@ export class AlphaGlobalHeader implements AfterViewInit, OnDestroy {
 	/**
 	 * After view and content has been rendered, check the menu widths
 	 */
-	public ngAfterViewInit (): void {
+	public ngAfterViewInit(): void {
 
 		// use our common menu sizing lib
 		this.header = new AlphaHeader( this.elRef.nativeElement, {
@@ -117,7 +118,7 @@ export class AlphaGlobalHeader implements AfterViewInit, OnDestroy {
 	 * on click of the home link either use the router, or allow to open in new tab
 	 * @param event
 	 */
-	public onHomeClick ( event: MouseEvent ) {
+	public onHomeClick( event: MouseEvent ) {
 
 		if ( this.home instanceof Array ) {
 
@@ -134,7 +135,7 @@ export class AlphaGlobalHeader implements AfterViewInit, OnDestroy {
 	/**
 	 * Cleanup on destroy
 	 */
-	public ngOnDestroy (): void {
+	public ngOnDestroy(): void {
 
 		this.header.destroy();
 	}

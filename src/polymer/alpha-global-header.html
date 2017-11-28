@@ -3,7 +3,7 @@
 	<template>
 
 		<template is="dom-if" if="{{home}}">
-			<a class="question-mark agh-icon-logo" id="mobileLogo" href="[[home]]"></a>
+			<a class="question-mark agh-icon-logo" id="mobileLogo" href="[[home]]" target="[[homeTarget]]"></a>
 		</template>
 
 		<div class="menu-container">
@@ -11,7 +11,7 @@
 			<template is="dom-if" if="{{home}}">
 
 				<div class="before-menu">
-					<a class="question-mark agh-icon-logo" href="[[home]]"></a>
+					<a class="question-mark agh-icon-logo" href="[[home]]" target="[[homeTarget]]"></a>
 				</div>
 
 			</template>
@@ -35,27 +35,31 @@
 		import { AlphaHeader } from '../angular/src/util/menu-component.ts';
 
 		Polymer({
-			is : 'alpha-global-header',
-				properties: {
-					title : String,
-					settings : Object,
-					home : String,
-					languages : Array,
-					search : Boolean,
-					searchAction : String
+			is: 'alpha-global-header',
+			properties: {
+				title: String,
+				settings: Object,
+				home: String,
+				target: {
+					type: String,
+					value: '_self'
 				},
+				languages: Array,
+				search: Boolean,
+				searchAction: String
+			},
 
-				ready : function(){
+			ready: function () {
 
-					// imported from menu-width.js
-					this.alphaHeader = new AlphaHeader( this, {
+				// imported from menu-width.js
+				this.alphaHeader = new AlphaHeader(this, {
 
-						search : this.search ? { action : this.searchAction } : false,
-						languages : this.languages
-					});
-				}
+					search: this.search ? { action: this.searchAction } : false,
+					languages: this.languages
+				});
+			}
 
-			});
+		});
 	</script>
 
 </dom-module>

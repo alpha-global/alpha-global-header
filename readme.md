@@ -1,6 +1,6 @@
 # Alpha Global Header
 
-* Stable tag: 1.0.8
+* Stable tag: 1.0.9
 
 ### Overview
 
@@ -39,6 +39,9 @@ npm run build
 ```
 
 # Changelog
+
+### 1.0.9
+- Added target for home logo
 
 ### 1.0.8
 - Resized padding on menu items

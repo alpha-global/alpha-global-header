@@ -6,6 +6,7 @@ export declare class AlphaGlobalHeader implements AfterViewInit, OnDestroy {
     private router;
     header: AlphaHeader;
     home: Array<string>;
+    homeTarget: string;
     search: boolean;
     searchAction: string;
     languages: Array<any>;

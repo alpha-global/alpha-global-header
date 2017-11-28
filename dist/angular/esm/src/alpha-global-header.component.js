@@ -6,6 +6,7 @@ var AlphaGlobalHeader = /** @class */ (function () {
         var _this = this;
         this.elRef = elRef;
         this.router = router;
+        this.homeTarget = '_self';
         this.languages = [];
         /**
          * Listen to navigation events
@@ -67,7 +68,7 @@ var AlphaGlobalHeader = /** @class */ (function () {
     AlphaGlobalHeader.decorators = [
         { type: Component, args: [{
                     selector: 'alpha-global-header',
-                    template: "\n\t<a *ngIf=\"home\" class=\"question-mark agh-icon-logo\" id=\"mobileLogo\" (click)=\"onHomeClick($event)\" target=\"_blank\"></a>\n\n\t<div class=\"menu-container\">\n\n\t\t<div *ngIf=\"home\" class=\"before-menu\">\n\t\t\t<a class=\"question-mark agh-icon-logo\" (click)=\"onHomeClick($event)\" target=\"_blank\"></a>\n\t\t</div>\n\n\t\t<div class=\"menu-area\">\n\n\t\t\t<ul menu-container class=\"main-menu\">\n\n\t\t\t\t<ng-content></ng-content>\n\n\t\t\t</ul>\n\n\t\t</div>\n\n\t</div>\n\n  \t",
+                    template: "\n\t<a *ngIf=\"home\" class=\"question-mark agh-icon-logo\" id=\"mobileLogo\" (click)=\"onHomeClick($event)\" [target]=\"homeTarget\"></a>\n\n\t<div class=\"menu-container\">\n\n\t\t<div *ngIf=\"home\" class=\"before-menu\">\n\t\t\t<a class=\"question-mark agh-icon-logo\" (click)=\"onHomeClick($event)\" [target]=\"homeTarget\"></a>\n\t\t</div>\n\n\t\t<div class=\"menu-area\">\n\n\t\t\t<ul menu-container class=\"main-menu\">\n\n\t\t\t\t<ng-content></ng-content>\n\n\t\t\t</ul>\n\n\t\t</div>\n\n\t</div>\n\n  \t",
                     styleUrls: ['../../../assets/less/styles/header.less'],
                     encapsulation: ViewEncapsulation.None
                 },] },
@@ -79,6 +80,7 @@ var AlphaGlobalHeader = /** @class */ (function () {
     ]; };
     AlphaGlobalHeader.propDecorators = {
         'home': [{ type: Input, args: ['home',] },],
+        'homeTarget': [{ type: Input, args: ['homeTarget',] },],
         'search': [{ type: Input, args: ['search',] },],
         'searchAction': [{ type: Input, args: ['search-action',] },],
         'languages': [{ type: Input, args: ['languages',] },],
