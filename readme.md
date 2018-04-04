@@ -1,6 +1,6 @@
 # Alpha Global Header
 
-* Stable tag: 1.0.9
+* Stable tag: 1.0.10
 
 ### Overview
 
@@ -49,3 +49,6 @@ npm run build
 ### 1.0.7
 - Added click to open on toolbar sub-menus
 - Last child dropdown menu align right
+
+### 1.0.10
+- Updated bower.json to exclude files for install
