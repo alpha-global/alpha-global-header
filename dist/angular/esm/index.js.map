@@ -1,1 +1,1 @@
-{"version":3,"sources":["../../../src/angular/index.ts"],"names":[],"mappings":"AAAA,cAAc,cAAc,CAAC","file":"index.js","sourceRoot":"","sourcesContent":["export * from './src/module';\n"]}
+{"version":3,"sources":["../../../src/angular/index.ts"],"names":[],"mappings":"AAAA,cAAc,cAAc,CAAC","file":"index.js","sourceRoot":"","sourcesContent":["export * from './src/module';\r\n"]}
