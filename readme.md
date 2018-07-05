@@ -55,3 +55,6 @@ npm run build
 
 ### 1.1.0
 - Added ability pass 'code' as a property instead of 'href' for languages
+
+### 1.1.1
+- Patched href navigation for Angular

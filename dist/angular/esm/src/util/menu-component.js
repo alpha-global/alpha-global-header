@@ -201,19 +201,26 @@ var AlphaHeader = /** @class */ (function () {
         for (i; i < len; i++) {
             var language = this.options.languages[i];
             var href = 'javascript:void(0)';
+            var attr = '';
             if (language.code) {
-                var url = new URL(document.location.href);
-                url.searchParams.delete('lang');
-                url.searchParams.append('lang', language.code);
-                href = url.href;
+                attr = 'data-lang="' + language.code + '"';
             }
             else if (language.href) {
                 href = language.href;
             }
-            subMenu += '<li><a href="' + href + '">' + language.label + '</a></li>';
+            subMenu += '<li><a ' + attr + ' href="' + href + '">' + language.label + '</a></li>';
         }
         subMenu += '</ul>';
         languageElement.innerHTML = subMenu;
+        languageElement.addEventListener('click', function (event) {
+            var code = null;
+            if (null !== (code = event.target.getAttribute('data-lang'))) {
+                var url = new URL(document.location.href);
+                url.searchParams.delete('lang');
+                url.searchParams.append('lang', code);
+                document.location.href = url.href;
+            }
+        });
         return languageElement;
     };
     /**

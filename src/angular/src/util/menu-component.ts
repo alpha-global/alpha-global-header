@@ -297,21 +297,31 @@ class AlphaHeader {
 		for ( i; i < len; i++ ) {
 			const language = this.options.languages[ i ];
 			let href: string = 'javascript:void(0)';
+			let attr: string = '';
 			if ( language.code ) {
-				let url: URL = new URL( document.location.href );
-				url.searchParams.delete( 'lang' );
-				url.searchParams.append( 'lang', language.code );
-				href = url.href;
+				attr = 'data-lang="' + language.code + '"';
+
 			} else if ( language.href ) {
 				href = language.href;
 			}
 
-			subMenu += '<li><a href="' + href + '">' + language.label + '</a></li>';
+			subMenu += '<li><a ' + attr + ' href="' + href + '">' + language.label + '</a></li>';
 		}
 
 		subMenu += '</ul>';
 
 		languageElement.innerHTML = subMenu;
+
+		languageElement.addEventListener( 'click', ( event: MouseEvent ) => {
+
+			let code = null;
+			if ( null !== ( code = ( event.target as HTMLElement ).getAttribute( 'data-lang' ) ) ) {
+				let url: URL = new URL( document.location.href );
+				url.searchParams.delete( 'lang' );
+				url.searchParams.append( 'lang', code );
+				document.location.href = url.href;
+			}
+		} );
 
 		return languageElement;
 	}
