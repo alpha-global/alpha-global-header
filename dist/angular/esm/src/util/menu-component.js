@@ -200,7 +200,17 @@ var AlphaHeader = /** @class */ (function () {
         var subMenu = '<ul class="sub-menu">', i = 0, len = this.options.languages.length;
         for (i; i < len; i++) {
             var language = this.options.languages[i];
-            subMenu += '<li><a href="' + language.href + '">' + language.label + '</a></li>';
+            var href = 'javascript:void(0)';
+            if (language.code) {
+                var url = new URL(document.location.href);
+                url.searchParams.delete('lang');
+                url.searchParams.append('lang', language.code);
+                href = url.href;
+            }
+            else if (language.href) {
+                href = language.href;
+            }
+            subMenu += '<li><a href="' + href + '">' + language.label + '</a></li>';
         }
         subMenu += '</ul>';
         languageElement.innerHTML = subMenu;

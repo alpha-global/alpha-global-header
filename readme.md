@@ -52,3 +52,6 @@ npm run build
 
 ### 1.0.10
 - Updated bower.json to exclude files for install
+
+### 1.1.0
+- Added ability pass 'code' as a property instead of 'href' for languages

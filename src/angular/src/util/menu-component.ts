@@ -39,7 +39,7 @@ class AlphaHeader {
 	private _boundClickFunction: EventListenerOrEventListenerObject;
 	private _boundWindowClickFunction: EventListenerOrEventListenerObject;
 
-	constructor (
+	constructor(
 		public element,
 		options
 	) {
@@ -87,7 +87,7 @@ class AlphaHeader {
 	 * Listen to clicks on the window to close open nav menus
 	 * @param event
 	 */
-	private onWindowClick ( event ): void {
+	private onWindowClick( event ): void {
 
 		// if the click came from the menu, dont do anything
 		if ( event.isMenuClick ) {
@@ -102,7 +102,7 @@ class AlphaHeader {
 	 *
 	 * @param event
 	 */
-	private onClick ( event ): void {
+	private onClick( event ): void {
 
 		event.isMenuClick = true;
 
@@ -174,7 +174,7 @@ class AlphaHeader {
 	 * This will
 	 * @param element
 	 */
-	private spoofCloseSubMenu ( element ) {
+	private spoofCloseSubMenu( element ) {
 		element.style.height = ITEM_SIZE + 'px';
 		element.style.pointerEvents = 'none';
 		setTimeout( function () {
@@ -189,7 +189,7 @@ class AlphaHeader {
 	/**
 	 * Go through each direct children of the ul menu container, measure the required text for each element plus some padding
 	 */
-	private getCollapsedMenuWidth ( options ): number {
+	private getCollapsedMenuWidth( options ): number {
 
 		var minWidth = 0,
 			options = options || {},
@@ -231,7 +231,7 @@ class AlphaHeader {
 	 * Move toolbar elements into the toolbar from the menu
 	 *
 	 */
-	private attachToolbarElements (): void {
+	private attachToolbarElements(): void {
 
 		// create the toolbar container
 		this.toolBar = document.createElement( 'div' );
@@ -275,7 +275,7 @@ class AlphaHeader {
 	/**
 	 * Create the language menu
 	 */
-	private createLanguageMenu ( extraClass: string = '' ): HTMLElement {
+	private createLanguageMenu( extraClass: string = '' ): HTMLElement {
 
 		if ( this.options.languages.length === 0 ) {
 			return null;
@@ -296,7 +296,17 @@ class AlphaHeader {
 
 		for ( i; i < len; i++ ) {
 			const language = this.options.languages[ i ];
-			subMenu += '<li><a href="' + language.href + '">' + language.label + '</a></li>';
+			let href: string = 'javascript:void(0)';
+			if ( language.code ) {
+				let url: URL = new URL( document.location.href );
+				url.searchParams.delete( 'lang' );
+				url.searchParams.append( 'lang', language.code );
+				href = url.href;
+			} else if ( language.href ) {
+				href = language.href;
+			}
+
+			subMenu += '<li><a href="' + href + '">' + language.label + '</a></li>';
 		}
 
 		subMenu += '</ul>';
@@ -309,7 +319,7 @@ class AlphaHeader {
 	/**
 	 * Create an icon to open the search
 	 */
-	private createSearchIcon (): HTMLElement {
+	private createSearchIcon(): HTMLElement {
 		const searchIcon: HTMLElement = document.createElement( 'div' );
 		searchIcon.classList.add( 'search-icon' );
 		searchIcon.setAttribute( 'menu-icon', 'g' );
@@ -319,7 +329,7 @@ class AlphaHeader {
 	/**
 	 * Create the search area
 	 */
-	private createSearchArea (): void {
+	private createSearchArea(): void {
 
 		// create the search form
 		this.searchArea = document.createElement( 'div' );
@@ -354,7 +364,7 @@ class AlphaHeader {
 	/**
 	 * Attach sub menu toggles
 	 */
-	private attachSubMenuToggles (): void {
+	private attachSubMenuToggles(): void {
 
 		const subMenus = this.element.querySelectorAll( '.sub-menu' );
 
@@ -381,7 +391,7 @@ class AlphaHeader {
 	 * @param {*} font
 	 * @param {*} overwrites
 	 */
-	private measureWidth ( text, font, overwrites: any = {} ): number {
+	private measureWidth( text, font, overwrites: any = {} ): number {
 
 		var letterSpacing = overwrites.letterSpacing || 0;
 		var wordSpacing = overwrites.wordSpacing || 0;
@@ -397,7 +407,7 @@ class AlphaHeader {
 	 *
 	 * @param {*} font
 	 */
-	private getContext2d ( font ): CanvasRenderingContext2D {
+	private getContext2d( font ): CanvasRenderingContext2D {
 
 		if ( this.canvasContext ) {
 			return this.canvasContext;
@@ -423,18 +433,18 @@ class AlphaHeader {
 	}
 
 
-	public open (): void {
+	public open(): void {
 		this.closeSubMenus();
 		this.element.classList.add( 'open' );
 		htmlClasses.add( 'nav-open' );
 	}
 
-	public close (): void {
+	public close(): void {
 		this.element.classList.remove( 'open' );
 		htmlClasses.remove( 'nav-open' );
 	}
 
-	public closeSubMenus (): void {
+	public closeSubMenus(): void {
 		let openElements = this.element.querySelectorAll( '.open' );
 		var i = 0, len = openElements.length;
 		for ( i; i < len; i++ ) {
@@ -443,12 +453,12 @@ class AlphaHeader {
 		}
 	}
 
-	public openSearch (): void {
+	public openSearch(): void {
 		this.closeSubMenus();
 		this.searchArea.classList.add( 'open' );
 	}
 
-	public closeSearch (): void {
+	public closeSearch(): void {
 
 		this.searchArea.classList.remove( 'open' );
 
@@ -457,7 +467,7 @@ class AlphaHeader {
 	/**
 	 * Remove listeners
 	 */
-	public destroy (): void {
+	public destroy(): void {
 
 		window.removeEventListener( 'resize', this._boundResizeFunction );
 
@@ -467,7 +477,7 @@ class AlphaHeader {
 	/**
 	 * Resize function
 	 */
-	public check (): void {
+	public check(): void {
 
 		// extract the supported values
 		var reservedWidth = MENU_RESERVED_WIDTH,
@@ -561,7 +571,7 @@ class AlphaHeader {
 	/**
 	 * Set extra item padding
 	 */
-	private setExtraItemPadding (): void {
+	private setExtraItemPadding(): void {
 
 		// available width the menu has to expand to
 		var availWidth = document.body.clientWidth - MENU_RESERVED_WIDTH;
@@ -635,7 +645,7 @@ class AlphaHeader {
  * @param obj
  * @param defaultProps
  */
-function merge ( obj, defaultProps ) {
+function merge( obj, defaultProps ) {
 	for ( let prop in defaultProps ) {
 		if ( !obj.hasOwnProperty( prop ) ) {
 			obj[ prop ] = defaultProps[ prop ];
@@ -653,7 +663,7 @@ function merge ( obj, defaultProps ) {
  * @param defaultValue
  * @returns {*}
 */
-function prop ( src, attr, defaultValue ) {
+function prop( src, attr, defaultValue ) {
 	return ( src && typeof src[ attr ] !== 'undefined' && src[ attr ] ) || defaultValue;
 }
 
@@ -664,7 +674,7 @@ function prop ( src, attr, defaultValue ) {
  * @param options
  * @return {*}
  */
-function pxValue ( val, options = {} ) {
+function pxValue( val, options = {} ) {
 	var baseFontSize = parseInt( prop( options, 'base-font-size', 16 ), 10 );
 
 	var value = parseFloat( val );
@@ -689,7 +699,7 @@ function pxValue ( val, options = {} ) {
  * @param {*} ws
  * @param {*} ls
  */
-function addWordAndLetterSpacing ( ws, ls ) {
+function addWordAndLetterSpacing( ws, ls ) {
 
 	let wordAddon = 0;
 	if ( ws ) {
@@ -711,7 +721,7 @@ function addWordAndLetterSpacing ( ws, ls ) {
 
 
 
-function getValueOrVariable ( value, el ) {
+function getValueOrVariable( value, el ) {
 
 	if ( value.indexOf( '@' ) >= 0 ) {
 		var style = getComputedStyle( el ),
@@ -728,7 +738,7 @@ function getValueOrVariable ( value, el ) {
 	return value;
 }
 
-function getValueOrVariableInt ( value, el ) {
+function getValueOrVariableInt( value, el ) {
 
 	var computedValue = getValueOrVariable( value, el );
 
