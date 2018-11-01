@@ -58,3 +58,7 @@ npm run build
 
 ### 1.1.1
 - Patched href navigation for Angular
+
+### 1.2.0
+- Angular 7
+- Removed font
