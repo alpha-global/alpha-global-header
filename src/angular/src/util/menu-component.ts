@@ -69,7 +69,10 @@ class AlphaHeader {
 			this.createSearchArea();
 		}
 
-		requestAnimationFrame( () => this.check() );
+		requestAnimationFrame( () => {
+			this.check();
+			this.element.classList.add( 'ready' );
+		} );
 
 		this._boundResizeFunction = this.check.bind( this );
 		this._boundClickFunction = this.onClick.bind( this );
@@ -85,7 +88,6 @@ class AlphaHeader {
 
 	/**
 	 * Listen to clicks on the window to close open nav menus
-	 * @param event
 	 */
 	private onWindowClick( event ): void {
 
@@ -99,8 +101,6 @@ class AlphaHeader {
 
 	/**
 	 * Handle clicks on different elements
-	 *
-	 * @param event
 	 */
 	private onClick( event ): void {
 
@@ -172,7 +172,6 @@ class AlphaHeader {
 	/**
 	 * In angular situations, the page doesn't navigate, so a hovered sub-menu will remain open after a click
 	 * This will
-	 * @param element
 	 */
 	private spoofCloseSubMenu( element ) {
 		element.style.height = ITEM_SIZE + 'px';
@@ -396,10 +395,6 @@ class AlphaHeader {
 
 	/**
 	 * Measure the width of text given a font def and custom properties
-	 *
-	 * @param {*} text
-	 * @param {*} font
-	 * @param {*} overwrites
 	 */
 	private measureWidth( text, font, overwrites: any = {} ): number {
 
@@ -414,8 +409,6 @@ class AlphaHeader {
 
 	/**
 	 * Get canvas element to measure text with
-	 *
-	 * @param {*} font
 	 */
 	private getContext2d( font ): CanvasRenderingContext2D {
 
@@ -652,8 +645,6 @@ class AlphaHeader {
 
 /**
  *
- * @param obj
- * @param defaultProps
  */
 function merge( obj, defaultProps ) {
 	for ( let prop in defaultProps ) {
@@ -667,11 +658,6 @@ function merge( obj, defaultProps ) {
 
 /**
  * Get property from src
- *
- * @param src
- * @param attr
- * @param defaultValue
- * @returns {*}
 */
 function prop( src, attr, defaultValue ) {
 	return ( src && typeof src[ attr ] !== 'undefined' && src[ attr ] ) || defaultValue;
@@ -680,9 +666,6 @@ function prop( src, attr, defaultValue ) {
 
 /**
  * We only support rem/em/pt conversion
- * @param val
- * @param options
- * @return {*}
  */
 function pxValue( val, options = {} ) {
 	var baseFontSize = parseInt( prop( options, 'base-font-size', 16 ), 10 );
@@ -706,8 +689,6 @@ function pxValue( val, options = {} ) {
 
 /**
  * Add custom letter and word spacing
- * @param {*} ws
- * @param {*} ls
  */
 function addWordAndLetterSpacing( ws, ls ) {
 
@@ -728,34 +709,6 @@ function addWordAndLetterSpacing( ws, ls ) {
 		return ( words * wordAddon ) + ( chars * letterAddon );
 	};
 }
-
-
-
-function getValueOrVariable( value, el ) {
-
-	if ( value.indexOf( '@' ) >= 0 ) {
-		var style = getComputedStyle( el ),
-			varValue = style.getPropertyValue( '--' + value.replace( '@', '' ) );
-
-		if ( varValue ) {
-			value = varValue;
-		} else {
-			return null;
-		}
-
-	}
-
-	return value;
-}
-
-function getValueOrVariableInt( value, el ) {
-
-	var computedValue = getValueOrVariable( value, el );
-
-	return computedValue ? parseInt( computedValue.replace( 'px', '' ) ) : null;
-
-}
-
 
 export {
 	AlphaHeader

@@ -11,8 +11,7 @@ import {
 
 import {
 	Router,
-	NavigationStart,
-	NavigationEnd
+	NavigationStart
 } from '@angular/router';
 
 import { AlphaHeader } from './util/menu-component';

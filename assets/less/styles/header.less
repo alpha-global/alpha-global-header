@@ -1,4 +1,4 @@
-@import (inline) "../imports/fonts.min.css";
+@import (inline) "../imports/alpha-icons.css";
 @red: #e42312;
 @headerLinkColour : #000000;
 @headerLinkHoverColour : @red;
@@ -8,6 +8,9 @@
 @searchInputColour : #5d6368;
 @borderColour : #dfdfdf;
 @bgDark : #f9f9f9;
+@primaryFont: "Avante Garde",
+"Century Gothic",
+sans-serif;
 @onePXBiggerThanMobile : (@mobileMenuBreakWidth + 1);
 @mobileMenuBreakWidth : 768px;
 /**
@@ -121,7 +124,7 @@ alpha-global-header {
     left: 0px;
     width: 100%;
     line-height: 1;
-    font-family: "ITCAvantGardeStd", "Century Gothic", sans-serif;
+    font-family: @primaryFont;
     color: #000;
     a {
         text-decoration: none;

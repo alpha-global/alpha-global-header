@@ -1,3 +1,6 @@
 {
-  "extends": "../../../src/angular/tsconfig.json"
+	"extends": "../../../src/angular/tsconfig.lib.json",
+	"exclude": [
+		"**/*.spec.ts"
+	]
 }
