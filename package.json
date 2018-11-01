@@ -1,7 +1,7 @@
 {
 	"$schema": "./node_modules/ng-packagr/package.schema.json",
 	"name": "alpha-global-header",
-	"version": "1.2.0",
+	"version": "1.2.1",
 	"author": "Relentless Technology",
 	"license": "ISC",
 	"description": "Global Header for Alpha",
@@ -20,6 +20,16 @@
 			"entryFile": "src/angular/index.ts"
 		}
 	},
+	"main": "dist/angular/bundles/alpha-global-header.umd.js",
+	"module": "dist/angular/fesm5/alpha-global-header.js",
+	"es2015": "dist/angular/fesm2015/alpha-global-header.js",
+	"esm5": "dist/angular/esm5/alpha-global-header.js",
+	"esm2015": "dist/angular/esm2015/alpha-global-header.js",
+	"fesm5": "dist/angular/fesm5/alpha-global-header.js",
+	"fesm2015": "dist/angular/fesm2015/alpha-global-header.js",
+	"typings": "dist/angular/alpha-global-header.d.ts",
+	"metadata": "dist/angular/alpha-global-header.metadata.json",
+	"sideEffects": false,
 	"scripts": {
 		"test": "ng test",
 		"start": "npm run polymer:start | npm run angular:start",

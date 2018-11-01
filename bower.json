@@ -1,31 +1,33 @@
 {
-  "name": "alpha-global-header",
-  "private": true,
-  "main": "dist/polymer/alpha-global-header.js",
-  "authors": [
-    "Patrick Baldwin <pat@relentlesstechnology.com>"
-  ],
-  "description": "Global Alpha Header",
-  "license": "MIT",
-  "homepage": "",
-  "ignore": [
-	"**/.*",
-	"gulpfile.js",
-	"polymer.json",
-	"index.html",
-	"dist/angular",
-	"node_modules",
-	"bower_components",
-	"demo",
-	"src",
-	"assets",
-	"test",
-	"tests",
-	".vscode/",
-	".gitignore",
-	"package-lock.json"
-  ],
-  "dependencies": {
-    "webcomponentsjs": "^0.7.24"
-  }
+	"name": "alpha-global-header",
+	"private": true,
+	"main": "dist/polymer/alpha-global-header.js",
+	"authors": [
+		"Patrick Baldwin <pat@relentlesstechnology.com>"
+	],
+	"description": "Global Alpha Header",
+	"license": "MIT",
+	"homepage": "",
+	"ignore": [
+		"**/.*",
+		"gulpfile.js",
+		"polymer.json",
+		"index.html",
+		"dist/angular",
+		"node_modules",
+		"bower_components",
+		"demo",
+		"src",
+		"assets",
+		"test",
+		"tests",
+		".vscode/",
+		".gitignore",
+		"angular.json",
+		"tsconfig.json",
+		"package-lock.json"
+	],
+	"dependencies": {
+		"webcomponentsjs": "^0.7.24"
+	}
 }

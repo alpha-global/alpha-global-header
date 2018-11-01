@@ -62,3 +62,6 @@ npm run build
 ### 1.2.0
 - Angular 7
 - Removed font
+
+### 1.2.1
+- Patch dist build for ng
